@@ -1,0 +1,25 @@
+Troubleshooting:
+
+~ My computer is asking me how I want to open this file, which app do I select?
+  >>>Scroll down through the apps until you see python and click on python then click ok
+
+~ I can't find python when it asks me how I want to open this file, how do I open it?
+  >>> open readme.txt to find out how to get python
+
+~It comes up with a box saying theres an error, what do I do?
+  >>>Message me on discord, my name is NeatPlaysAlt#9312
+
+~It comes up with red text, what do I do?
+  >>>Message me on discord, my name is NeatPlaysAlt#9312
+
+~The window is flashing the cursor but I can't type , what do I do?
+  >>>again, Just give it a minute and it will work, it may take a minute and if it takes more than 2 minutes then close and re open the program
+
+~For anything else that goes wrong contact me at;
+ admin@neatnet.org - [Email]
+ padlad256@gmail.com - [Alternative Email]
+ NeatPlaysAlt#9312 - [Discord]
+ @WhitakerF18 - [Instagram]
+ WhitakerF18 - [Snapchat]
+ padlad256 - [facebook]
+

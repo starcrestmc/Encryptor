@@ -132,22 +132,64 @@ def listgen(filetowrite):
     with open(f'Vault/{filetowrite}.json', 'r') as f:
         data = json.load(f)
 
+# Key:
+# 0000 | u+200b is ZWSP
+# 0001 | u+200c is ZWNJ
+# 0010 | u+200d is ZWJ
+# 0011 | u+2060 is WJ
+# 0100 | u+200e is LTRM
+# 0101 | u+200f is RTLM
+# 0110 | u+2066 is LTRI
+# 0111 | u+2067 is RTLI
+# 1000 | u+2068 is FSI
+# 1001 | u+2069 is PDI
+# 1010 | u+180e is Mongolian Vowel Seperator
+# 1011 | u+180b is Mongolian Free Variation Selector 1
+# 1100 | u+180c is Mongolian Free Variation Selector 2
+# 1101 | u+180d is Mongolian Free Variation Selector 3
+# 1110 | u+206a is Inhibit Symmetric Swapping
+# 1111 | u+206b is Active Symmetric Swapping
+
 
 def hidetext(text):
-    # Convert string to a sequence of 0s and 1s
+    key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\u180b', '\u180c', '\u180d', '\u206a', '\u206b']
+    # Key map defined
     binary_data = ''.join(format(ord(c), '08b') for c in text)
+    hidden_chars = []
+    for i in range(0, len(binary_data), 4):
+        4bit_part = binary_data[i:i+4]  # Break into 4 parts
+        index_position = int(4bit_part, 2) # convert binary to integer
+        hidden_chars.append(key_map[index_position])
+    return ''.join(hidden_chars)
+
+    # Old method using only 
+
+    # Convert string to a sequence of 0s and 1s
+    #binary_data = ''.join(format(ord(c), '08b') for c in text)
     
     # Map 0 to ZWSP (\u200b) and 1 to ZWJ (\u200d)
-    hidden = binary_data.replace('0', '\u200b').replace('1', '\u200d')
-    return hidden
+    #hidden = binary_data.replace('0', '\u200b').replace('1', '\u200d')
+
+
 
 def showtext(text):
-    # Convert back to 0s and 1s
-    binary_data = text.replace('\u200b', '0').replace('\u200d', '1')
-    
-    # Group by 8 bits and convert back to characters
-    chars = [chr(int(binary_data[i:i+8], 2)) for i in range(0, len(binary_data), 8)]
-    return ''.join(chars)
+    def showtext(text):
+    # 1. Use the exact same key_map list
+    key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\u180b', '\u180c', '\u180d', '\u206a', '\u206b']
+    binary_chunkz = []
+    for char in text: # Read the hidden text character by character
+        if char in key_map:
+            index = key_map.index(char) # Find the index of this char
+            fourbit_part = format(index, '04b') # Convert into a 4-bit binary string (padded with 0's)
+            binary_chunkz.append(fourbit_part)
+            
+    full_binary = ''.join(binary_chunkz) # 3. Combine all 4-bit parts into one massive binary string
+    decoded_string = [] # 4. Break the binary string back into 8-bit bytes and convert to actual characters
+    for i in range(0, len(full_binary), 8):
+        byte_part = full_binary[i:i+8]
+        # Convert 8-bit binary string to integer, then integer to character
+        decoded_string.append(chr(int(byte_part, 2)))
+    return ''.join(decoded_string)
 
 def derive_key_from_password(password, salt=None):
     if salt is None:

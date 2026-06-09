@@ -1,3 +1,5 @@
+This is A Project I have been working on for a while to provide a secure way to encrypt and decrypt through stacking encryption techniques with obfuscation techniques and implementing integrity checks
+
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 This work is licensed under a

@@ -1,3 +1,5 @@
+# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/
+
 import warnings
 warnings.filterwarnings("ignore") # Suppress all warnings
 import pgpy
@@ -38,7 +40,9 @@ def POST(): # Test for keys and make them if they dont exist (POST = Power on Se
             compression=[CompressionAlgorithm.ZLIB],
             key_expires=timedelta(days=3650)
         )
-
+        
+# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/
+        
         # Export ASCII-armored versions
         with open(private_key_path, "w") as f:
             f.write(str(key))
@@ -76,6 +80,4 @@ def dec(loc1,loc2,ciphertext):
     
     return dec_msg,verified
 
-
-
-
+# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/

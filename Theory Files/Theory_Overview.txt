@@ -1,0 +1,13 @@
+message is aes256 encrypted with password from a list where you have a per friend dict of passwords 1-1000 both people have the same list but encrypted locally with their own keys respectively that the other doesnt know
+
+when encrypting, you attach a number to the message which is otherwise meaningless and when receiving find the index
+
+for security the password used gets removed from the list and the indexes shift backwards to fill the space (so the indexes are constantly changing since when one is used its omitted)
+
+every message we send the length of the list to make sure both are in sync and if not catch it in the next message and if the same number was used twice, the person with the smaller index sends the hash of that current positions password and if it doesn't match that of the other persons the larger index person deletes that entry
+
+we have a global list of the same which stores passwords for each friends lists and the master list number to associate with the friends is written down irl
+
+friend has a copy of their password list since lists are shared
+
+encrypted text is as follows: <aes blob>:<passwordnumber>_<length of password list before removing>

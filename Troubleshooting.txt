@@ -1,0 +1,41 @@
+Key:
+Q = Question
+A = Answer
+
+------------------------------------------------------------------------------------
+
+Q: My computer is asking me what to open this file with, what do I click
+A: Click "Python", it has a black background with a blue and yellow snake on it
+
+Q: How do I run this on Linux
+A: Navigate to where you have downloaded the file with the command "cd <folder name>" then run "python Main.py"
+
+Q: The terminal doesn't seem to be doing anything, its paused
+A: Don't type or click anything, this just means its processing
+
+Q: Red text appears at the top when I run it saying "[nltk_data] Downloading package brown to"
+A: Don't worry, this is normal behaviour and is python loading the dictionary to generate passwords, this is not an error
+
+Q: Red text appears saying "DeprecationWarning: imghdr was removed in Python 3.13. Please be aware that you are currently NOT using standard 'imghdr', but instead a separately installed 'standard-imghdr'."
+A: this is because my script uses an old module called imghdr which no longer exists and so this is a standard warning just saying you're using a downloaded version called "standard-imghdr' and is not an error
+
+Q: The program crashes when I run it
+A: For Windows and Mac, open it with IDLE (search IDLE then do CTRL+O and click main.py) then run it exactly how you did and send me the error on discord @starcrestmc or email me at admin@starcrestmc.net
+
+Q: I get a message saying "Your PGP Fingerprint is:" when I first run the program, what is this?
+A: this is a unique ID for your PGP keypair (private.asc and public.asc files) and is only used if there is an error, it ensures the key you gave your friend hasn't been changed since you gave it to them, note this down
+
+Q: Do I really need to notedown the master password
+A: Yes, if you lose or forget it there is no way of recovering it
+
+Q: Help! I've lost/forgot my master password 
+A: this cant be recovered, tell your friend's whos lists you have, to delete the shared password list they had as its useless now. Then,
+1. Delete master.json (in the Vault folder)
+2. Delete any and all password lists you had
+3. Generate a friends shared file (1 per friend) and share these
+4. Select option 3 and re-encrypt the new files you made and note down the numbers (tell your friends to also do this)
+
+Q: Help! I've lost/forgot the number for my friend's shared password list
+A: You can no longer use this list, Delete that list and tell whoever you shared it with to also delete it. Then select option 2 to generate a new shared password list, share this with your friend then encrypt this file (option 3) on your pc and tell them to do the same
+
+Is there a problem I have missed or haven't listed here? Contact me at admin@starcrestmc.net or via discord at @starcrestmc and I will be happy to help

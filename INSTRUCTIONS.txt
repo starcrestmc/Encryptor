@@ -13,6 +13,8 @@ Email - admin@starcrestmc.net
 Discord - @starcrestmc
 Instagram - @starcrest_mc
 
+Orignal tool by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/
+
 To Ensure There are minimal errors, please check:
 
 1.) There is a folder called Vault which contains a file called "BLANK.json"

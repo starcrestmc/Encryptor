@@ -157,12 +157,12 @@ def hidetext(text):
     binary_data = ''.join(format(ord(c), '08b') for c in text)
     hidden_chars = []
     for i in range(0, len(binary_data), 4):
-        4bit_part = binary_data[i:i+4]  # Break into 4 parts
-        index_position = int(4bit_part, 2) # convert binary to integer
+        fourbit_part = binary_data[i:i+4]  # Break into 4 parts
+        index_position = int(fourbit_part, 2) # convert binary to integer
         hidden_chars.append(key_map[index_position])
     return ''.join(hidden_chars)
 
-    # Old method using only 
+    # Old method using only 2 chars
 
     # Convert string to a sequence of 0s and 1s
     #binary_data = ''.join(format(ord(c), '08b') for c in text)
@@ -173,7 +173,6 @@ def hidetext(text):
 
 
 def showtext(text):
-    def showtext(text):
     # 1. Use the exact same key_map list
     key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\u180b', '\u180c', '\u180d', '\u206a', '\u206b']
     binary_chunkz = []

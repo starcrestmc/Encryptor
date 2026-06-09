@@ -1,4 +1,4 @@
-This is A Project I have been working on for a while to provide a secure way to encrypt and decrypt through stacking encryption techniques with obfuscation techniques and implementing integrity checks
+This is A Project I have been working on for a while to provide a secure way to encrypt and decrypt through stacking encryption techniques with obfuscation techniques and implementing integrity checks. When you download it, please delete "DELETEME" in PGPKeys, it was a placeholder so git let me upload the essential folder
 
 Please check the SHA256 hash of the release matches the hash on: https://www.geocities.ws/coffeecity/checksum.txt
 

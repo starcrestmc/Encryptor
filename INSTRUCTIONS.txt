@@ -56,7 +56,6 @@ EXTRAMODULES - This is a folder with modules I have made myself inside. these mo
 Python-3.14 Docs (HTML) - This contains the HTML files for the python Docs
 Vault - This contains Yours and your friends' password lists
 PGPKeys - This contains your PGP keys (public.asc and private.asc), this is also where your friends' PGP keys go
-Theory Files - These are test files I made while making the project where I explore concepts and journal them
 
 ============ Files & Folders you can safely delete ============
 

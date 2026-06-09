@@ -21,7 +21,7 @@ This work is licensed under a
 
 **Archives of this repository can be found at the following sites:**
 
+> - perma.cc - https://perma.cc/K7JY-NFR9
+> - archive.today/archive.ph @ https://archive.ph/Jhj9b
+> - ghostarchive.org - https://ghostarchive.org/archive/wMRM8
 > - thewaybackmachine - https://web.archive.org/web/20260609223131/https://github.com/starcrestmc/Encryptor-v6/
-> - archive.today/archive.ph - https://archive.ph/HRkKy
-> - perma.cc - https://perma.cc/MAK8-5HMX
-> - ghostarchive.org - https://ghostarchive.org/archive/QxD1

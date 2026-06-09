@@ -21,11 +21,12 @@ To Ensure There are minimal errors, please check:
 4.) The files: aj.pkl, av.pkl, n.pkl and v.pkl exist
 5.) You have python 3.14 or later installed
 
-Files:
+- [ Files ] -
 
 Main.py - This is the encryptor itself
 requirements.txt - a list of modules the program needs. If these modules aren't installed you will be given the option to install them
 Troubleshooting.txt - Take a look at this if you encounter any issues
+LICENSE-CC-BY-NC-ND.txt - This is the creative commons liscense which states how you can and can't use this project
 Python Download (Shortcut).html - If you need to download python, this will redirect you to python.org/download
 Python Docs (Shortcut).html - This file is the shortcut to the HTML files
 aj.pkl - A dictionary of long complex adjectives
@@ -47,13 +48,19 @@ EXTRAMODULES/pre.py - this is a password generator I wrote which uses .pkl (dict
 
 
 
-Folders:
+- [ Folders ] -
 
 EXTRAMODULES - This is a folder with modules I have made myself inside. these modules are essential, please do not delete
 Python-3.14 Docs (HTML) - This contains the HTML files for the python Docs
 Vault - This contains Yours and your friends' password lists
 PGPKeys - This contains your PGP keys (public.asc and private.asc), this is also where your friends' PGP keys go
 Theory Files - These are test files I made while making the project where I explore concepts and journal them
+
+============ Files & Folders you can safely delete ============
+
+robots.txt - this is a github file that stops automatic web scrapers
+.github/ISSUE_TEMPLATE - this is a github file for the Issues Section
+CODE_OF_CONDUCT.md - This is a github file explaining how I expect you to treat the repository
 
 ---------------------------- Options ----------------------------
 if there is a piece of text with [] in, those are the options.

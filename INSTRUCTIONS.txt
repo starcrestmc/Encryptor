@@ -2,7 +2,7 @@ Before you run this please ensure the zip you downloaded has the same sha256 has
 https://www.geocities.ws/coffeecity/checksum.txt
 
 if the hash doesn't match, please re-download Encryptor from
-https://www.github.com/starcrestmc/encryptor
+https://www.github.com/starcrestmc/Encryptor-v6
 
 ---------------------------- Information ----------------------------
 

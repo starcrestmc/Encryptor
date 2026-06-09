@@ -1,3 +1,5 @@
+# Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
+
 from random import randrange as rr
 from random import choice as ch
 import time as t
@@ -300,6 +302,7 @@ def overwrite_vault(filepath, content, password):
             f.write(encrypted_blob)
     print(f"File {filepath} has been encrypted and overwritten.")
 
+# Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
 
 def vaultmanager(switchcase, ciphertext=None, ref=None, master=None): # 0 is unlock master, 1 is get your password from reference, 2 is clear all
     if switchcase == 0:
@@ -512,5 +515,7 @@ def startmenu():
         master = vaultmanager(0)
         # Unlock the Master to do any further operations
         messageunblur(master)
-
+print("-- [ This tool was made by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6 ] --")
 startmenu()
+
+# Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6

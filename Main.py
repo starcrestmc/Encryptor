@@ -341,7 +341,7 @@ def messageblur(master):
     refnum = secrets.randbelow(1029) # Get a secure random number | we append this number to the end
     plaintext = input("What is your message? \n")
     password = sharedvault[int(refnum)]
-    print(f'Password: {password}')
+    #print(f'Password: {password}')
     encrypted_msg = encrypt_aes(plaintext, password)
     remove_password = sharedvault.pop(int(refnum)) # delete the password so it cant be reused
     print(str(sharedvault))

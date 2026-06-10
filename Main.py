@@ -261,13 +261,6 @@ def encrypt_aes(plaintext, password): # FOR ENCRYPTING TEXT ONLY
 
     return encrypted_data.decode()
 
-def overwrite_vault(filepath, content, password):
-    json.load
-    queue_write = encrypt_aes(str(content), password) # encrypt back the password list with the used value popped
-    with open(filepath, 'w') as f: # write that shi back
-            f.write(queue_write)
-
-
 def decrypt_aes(encrypted_data, password): # FOR DECRYPYIMG ANYTHING
     # Decode from Base64
     encrypted_data = base64.b64decode(encrypted_data)

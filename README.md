@@ -20,7 +20,7 @@ This work is licensed under a
 [cc-by-nc-nd-shield]: https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg
 
 **Archives of this repository can be found at the following sites:**
-
+> - https://zenodo.org/records/20618646
 > - perma.cc - https://perma.cc/K7JY-NFR9
 > - archive.today/archive.ph - https://archive.ph/Jhj9b
 > - ghostarchive.org - https://ghostarchive.org/archive/wMRM8

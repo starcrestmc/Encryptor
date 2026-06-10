@@ -207,7 +207,6 @@ def derive_key_from_password(password, salt=None):
 
 def encrypt_files_aes(plaintext, password): # FOR ENCRYPTING FILES ONLY
 
-    
     # Generate a random salt (32 bytes for extra entropy)
     salt = os.urandom(32)  # 256-bit salt
 
@@ -300,7 +299,7 @@ def overwrite_vault(filepath, content, password):
     encrypted_blob = encrypt_files_aes(json_string, password)
     with open(filepath, 'wb') as f:
             f.write(encrypted_blob)
-    print(f"File {filepath} has been encrypted and overwritten.")
+    print(f"\nFile {filepath} has been encrypted and overwritten.")
 
 # Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
 
@@ -362,18 +361,19 @@ def messageblur(master):
 
 
     privloc = "PGPKeys/private.asc" # Personal private PGP key location
-    pub = input("Friends's public key name? (without .asc)")
+    pub = input("Friends's public key name? (without .asc)\n")
     fullfile = f'{pub}.asc' #Recievers key
     friendloc = "PGPKeys/" + str(fullfile)
     msg = encrypted_msg
     pgprun = PGPmsg.enc(privloc,friendloc,msg)
-    print(f'Your Message:\n {pgprun}')
+    #print(f'Your Message:\n {pgprun}')
 
     message  = hidetext(str(pgprun))
 
     print(f'Encoded: >{message}<')
 
     password = master[int(ref)]
+    
     overwrite_vault(f'Vault/{name}.json', sharedvault, password)
     password = ""
     sharedvault = ""
@@ -394,13 +394,13 @@ def messageunblur(master):
     ciphertext = showtext(ciphertext)
     privloc = "PGPKeys/private.asc" # Personal private PGP key location
 
-    sendrkey = input("Name of sender's public key for verification (without .asc)? ")
+    sendrkey = input("Name of sender's public key for verification (without .asc)?\n ")
     fullfile = f'{sendrkey}.asc' #senders key
     truepath = "PGPKeys/" + str(fullfile)
     run = PGPmsg.dec(privloc,truepath,ciphertext)
     decrypted_pgp = run[0]
     verified = run[1]
-    print("Decrypted message:\n", decrypted_pgp.message)
+    #print("Decrypted message:\n", decrypted_pgp.message)
     print("Signature verified:", bool(verified))
 
     textseperator_pt1 = str(decrypted_pgp.message).split(":")
@@ -420,7 +420,6 @@ def messageunblur(master):
         hashd = sha256(password.encode('utf-8')).hexdigest()
         print(f'Password Hash: {hashd} | Password Index {reference}')
         print("\nPlease Compare with Sender\n")
-        throw 
 
     print(f'Message:\n\n{decrypted_msg}')
     # friend should use list en/decoder tool to unlock and check whats at that position manually

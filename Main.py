@@ -338,7 +338,7 @@ def messageblur(master):
     #print(f'Password: {password}')
     encrypted_msg = encrypt_aes(plaintext, password)
     sharedvault.pop(int(refnum)) # delete the password so it cant be reused also pop doesnt need assignment as it updates the variable its being used on
-    print(str(sharedvault))
+    # print(str(sharedvault))
     t.sleep(5)
     postpoplength = len(sharedvault) # also append this which is length of list after removal
     encrypted_msg = f'{encrypted_msg}:{refnum}_{postpoplength}'
@@ -389,7 +389,7 @@ def messageunblur(master):
 
     textseperator_pt1 = str(decrypted_pgp.message).split(":")
     ciphertext = textseperator_pt1[0] # Ciphertext here
-    print(str(ciphertext))
+    # print(str(ciphertext))
     metadata = textseperator_pt1[1]
     textseperator_pt2 = metadata.split("_")
     reference = textseperator_pt2[0] # Ref Num Here

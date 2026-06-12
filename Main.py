@@ -344,9 +344,6 @@ def messageblur(master):
     encrypted_msg = f'{encrypted_msg}:{refnum}_{postpoplength}'
     print(f'\nYour List is now {postpoplength} entries long\n\n\n')
 
-    # need to also remove that password from master, re-encrypt all files with new referenced password
-
-
     privloc = "PGPKeys/private.asc" # Personal private PGP key location
     pub = input("Friends's public key name? (without .asc)\n")
     fullfile = f'{pub}.asc' #Recievers key

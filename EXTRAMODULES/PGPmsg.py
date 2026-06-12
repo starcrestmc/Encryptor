@@ -1,4 +1,4 @@
-# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
+# Original Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
 
 import warnings
 warnings.filterwarnings("ignore") # Suppress all warnings
@@ -41,7 +41,7 @@ def POST(): # Test for keys and make them if they dont exist (POST = Power on Se
             key_expires=timedelta(days=3650)
         )
         
-# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
+# Original Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
         
         # Export ASCII-armored versions
         with open(private_key_path, "w") as f:
@@ -80,4 +80,4 @@ def dec(loc1,loc2,ciphertext):
     
     return dec_msg,verified
 
-# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
+# Original Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES

@@ -106,9 +106,6 @@ def listgen(filetowrite):
 
     def joiner(filename):
             done = 0
-            with open(f'Vault/{filename}.json', 'r') as f:
-                    data = json.load(f)
-            deleteEMPTY = data.pop(int(0)) # remove value
             print("Verbose: Making Passwords..")
             for i in range(1028): # make 1028 passwords
                     a = pt.A()
@@ -129,10 +126,7 @@ def listgen(filetowrite):
             with open(f'Vault/{filename}.json', 'w') as f:
                     #print("\nWriting, Please Wait..")
                     json.dump(data, f, indent=4)
-                    print("Data Successfully Written!")          
-    joiner(filetowrite)
-    with open(f'Vault/{filetowrite}.json', 'r') as f:
-        data = json.load(f)
+                    print("Data Successfully Written!")
 
 # Key:
 # 0000 | u+200b is ZWSP

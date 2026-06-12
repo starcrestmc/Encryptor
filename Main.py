@@ -337,7 +337,7 @@ def messageblur(master):
     password = sharedvault[int(refnum)]
     #print(f'Password: {password}')
     encrypted_msg = encrypt_aes(plaintext, password)
-    remove_password = sharedvault.pop(int(refnum)) # delete the password so it cant be reused
+    sharedvault.pop(int(refnum)) # delete the password so it cant be reused also pop doesnt need assignment as it updates the variable its being used on
     print(str(sharedvault))
     t.sleep(5)
     postpoplength = len(sharedvault) # also append this which is length of list after removal
@@ -400,7 +400,7 @@ def messageunblur(master):
 
     password = sharedvault[int(reference)]
     decrypted_msg = decrypt_aes(ciphertext, password)
-    remove_password = sharedvault.pop(int(reference)) # delete the password so it cant be reused
+    sharedvault.pop(int(reference)) # delete the password so it cant be reused also pop doesnt need assignment as it updates the variable its being used on
     newlength = len(sharedvault)
     if int(newlength) != int(postpoplength):
         print("Error, Password sync Mismatch")

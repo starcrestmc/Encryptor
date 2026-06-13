@@ -8,7 +8,7 @@ Please read `INSTRUCTIONS.txt` which contains project information, setup instruc
 
 This Project takes any message or piece of text, encrypts it with AES-256 in GCM mode (which is the hardest to crack), adds a few informational parts onto it like a hash and password number, encrypts it with PGP then uses invisible unicode characters that dont visually appear (as in theyre there but dont take up any space) to make an invisible message that you can send it to your friend who uses a shared password list and their PGP Keypair to verify the message wasnt changed and decrypt the message. This project also implements a mandatory policy which makes your password lists to stay locked while you use it so if someone found the password files they're encrypted alredy and are only decrypted when you need to use them. My project also deletes used passwords from the list and attaches data telling the person you sent it to which password to automatically delete so no one can look up that password number (index). it also uses multiple (and changable) invisible unicode characters so someone cant just decode the message into binary to start cracking it.
 
-> When downloading the relase, please check the SHA256 hash of the release matches the hash on: https://www.geocities.ws/coffeecity/checksum.txt
+> When downloading the release, please check the SHA256 hash of the release matches the hash on: https://www.geocities.ws/coffeecity/checksum.txt
 
 This work is licensed under a
 [Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License][cc-by-nc-nd].

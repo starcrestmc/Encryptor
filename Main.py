@@ -259,7 +259,7 @@ def encrypt_aes(plaintext, password): # FOR ENCRYPTING TEXT ONLY
 
     return encrypted_data.decode()
 
-def decrypt_aes(encrypted_data, password): # FOR DECRYPYING ANYTHING
+def decrypt_aes(encrypted_data, password): # FOR DECRYPTING ANYTHING
     # Decode from Base64
     encrypted_data = base64.b64decode(encrypted_data)
 
@@ -426,9 +426,9 @@ def master_vault_setup():
     main_menu()
     
 def friends_vault_generator():
-    friendname = input("Please enter your friends name: ")
-    shutil.copy('Vault/BLANK.json', f'Vault/{friendname}.json')
-    list_generate(f'{friendname}')
+    friend_name = input("Please enter your friends name: ")
+    shutil.copy('Vault/BLANK.json', f'Vault/{friend_name}.json')
+    list_generate(f'{friend_name}')
     print("Share file with your friend and tell them to rename it to your name (keep a copy for later)")
     main_menu()
 

@@ -118,10 +118,10 @@ def list_generate(file_name):
                     gL = lr[0]
                     g = pt.H()
                     gR = lr[1]
-                    finishedpassword = f'{a}{b.title()}{c.title()}{d}{e.title()}{f.title()}{str(gL)}{g}{str(gR)}'
+                    finished_password = f'{a}{b.title()}{c.title()}{d}{e.title()}{f.title()}{str(gL)}{g}{str(gR)}'
                     done += 1
                     print(f'Made {done} of 1028')
-                    data.append(finishedpassword)
+                    data.append(finished_password)
                 
             with open(f'Vault/{filename}.json', 'w') as f:
                     #print("\nWriting, Please Wait...")

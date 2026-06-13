@@ -17,7 +17,7 @@ def av(): #adverb_list = [word for word, tag in pos_tag(word_list) if tag.starts
 
     return av_ls
     
-# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
+# Original Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
 
 def v():
     from nltk.corpus import brown
@@ -53,7 +53,7 @@ def aj():
 
     return aj_ls
 
-# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
+# Original Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
 
 def n():
     from nltk.corpus import brown
@@ -71,4 +71,4 @@ def n():
         pickle.dump(n_ls, f)
 
     return n_ls
-# Orignal Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES
+# Original Module built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6/tree/main/EXTRAMODULES

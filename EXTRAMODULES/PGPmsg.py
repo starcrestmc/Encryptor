@@ -52,8 +52,8 @@ def POST(): # Test for keys and make them if they dont exist (POST = Power on Se
 
         fp = key.fingerprint
         formatted = ' '.join(fp[i:i+4] for i in range(0, len(fp), 4))
-        print("Your PGP Fingerprint is: ", formatted)
-        print("\n(This message will only show once,\nNote this down incase you need to verify with a friend)")
+        print("\n\nYour PGP Fingerprint is: ", formatted)
+        print("[This message will only show once, Note this down incase you need to verify with a friend]\n")
 
 def enc(loc1,loc2,msg):
     load_key = lambda name: pgpy.PGPKey.from_file(name)[0]

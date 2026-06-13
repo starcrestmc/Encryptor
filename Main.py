@@ -1,4 +1,4 @@
-# Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
+# Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
 
 from random import randrange as rr
 from random import choice as ch
@@ -43,7 +43,7 @@ switchcase = None # set the case to blank
 PGPmsg.POST() # Make sure PGP Keys are Generated (POST = Power On Self Test)
 
 
-def listgen(filetowrite):
+def list_generate(file_name):
     class pt:
         @staticmethod
         def A():
@@ -70,7 +70,7 @@ def listgen(filetowrite):
             v = ch(v_ls)
             return v
 
-        def D(): # midchar
+        def D(): # middle character
             chs = ['(_)', '[_]', '{_}', '(-)', '[-]', '{-}', '(+)', '[+]', '{+}', '(=)', '[=]', '{=}', '(&)', '[&]', '{&}', '(%)', '[%]', '{%}']
             x = rr(0, 18) # Maximum Security
             return chs[x]
@@ -93,7 +93,7 @@ def listgen(filetowrite):
             n = ch(n_ls)
             return n
 
-        def G(): #sidechar
+        def G(): # character either side of the end part
             c1 = ['(#', '[#', '{#', '($', '[$', '{$', '(=', '[=', '{='] # Security LV.1 could be index 0-2 and Security LV 2 could be index 3-11
             mpr = {'(#': ')', '[#': ']', '{#': '}', '($': ')', '[$': ']', '{$': '}', '(=': ')', '[=': ']', '{=': '}'}
             a = rr(0, 8) # Maximum Security
@@ -104,7 +104,7 @@ def listgen(filetowrite):
         def H():
             return rr(10000, 99999) #Maximum Security
 
-    def joiner(filename):
+    def joiner(file):
             done = 0
             print("Verbose: Making Passwords..")
             for i in range(1028): # make 1028 passwords
@@ -124,10 +124,11 @@ def listgen(filetowrite):
                     data.append(finishedpassword)
                 
             with open(f'Vault/{filename}.json', 'w') as f:
-                    #print("\nWriting, Please Wait..")
+                    #print("\nWriting, Please Wait...")
                     json.dump(data, f, indent=4)
                     print("Data Successfully Written!")
-
+    
+    joiner(file_name)
 # Key:
 # 0000 | u+200b is ZWSP
 # 0001 | u+200c is ZWNJ
@@ -139,7 +140,7 @@ def listgen(filetowrite):
 # 0111 | u+2067 is RTLI
 # 1000 | u+2068 is FSI
 # 1001 | u+2069 is PDI
-# 1010 | u+180e is Mongolian Vowel Seperator
+# 1010 | u+180e is Mongolian Vowel Separator
 # 1011 | u+180b is Mongolian Free Variation Selector 1
 # 1100 | u+180c is Mongolian Free Variation Selector 2
 # 1101 | u+180d is Mongolian Free Variation Selector 3
@@ -147,14 +148,14 @@ def listgen(filetowrite):
 # 1111 | u+206b is Active Symmetric Swapping
 
 
-def hidetext(text):
+def hide_text(text):
     key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\u180b', '\u180c', '\u180d', '\u206a', '\u206b']
     # Key map defined
     binary_data = ''.join(format(ord(c), '08b') for c in text)
     hidden_chars = []
     for i in range(0, len(binary_data), 4):
-        fourbit_part = binary_data[i:i+4]  # Break into 4 parts
-        index_position = int(fourbit_part, 2) # convert binary to integer
+        four_bit_part = binary_data[i:i+4]  # Break into 4 parts
+        index_position = int(four_bit_part, 2) # convert binary to integer
         hidden_chars.append(key_map[index_position])
     return ''.join(hidden_chars)
 
@@ -168,17 +169,17 @@ def hidetext(text):
 
 
 
-def showtext(text):
+def show_text(text):
     # 1. Use the exact same key_map list
     key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\u180b', '\u180c', '\u180d', '\u206a', '\u206b']
-    binary_chunkz = []
+    binary_chunks = []
     for char in text: # Read the hidden text character by character
         if char in key_map:
             index = key_map.index(char) # Find the index of this char
-            fourbit_part = format(index, '04b') # Convert into a 4-bit binary string (padded with 0's)
-            binary_chunkz.append(fourbit_part)
+            four_bit_part = format(index, '04b') # Convert into a 4-bit binary string (padded with 0's)
+            binary_chunks.append(four_bit_part)
             
-    full_binary = ''.join(binary_chunkz) # 3. Combine all 4-bit parts into one massive binary string
+    full_binary = ''.join(binary_chunks) # 3. Combine all 4-bit parts into one massive binary string
     decoded_string = [] # 4. Break the binary string back into 8-bit bytes and convert to actual characters
     for i in range(0, len(full_binary), 8):
         byte_part = full_binary[i:i+8]
@@ -255,7 +256,7 @@ def encrypt_aes(plaintext, password): # FOR ENCRYPTING TEXT ONLY
 
     return encrypted_data.decode()
 
-def decrypt_aes(encrypted_data, password): # FOR DECRYPYIMG ANYTHING
+def decrypt_aes(encrypted_data, password): # FOR DECRYPYING ANYTHING
     # Decode from Base64
     encrypted_data = base64.b64decode(encrypted_data)
 
@@ -288,17 +289,17 @@ def overwrite_vault(filepath, content, password):
             f.write(encrypted_blob)
     print(f"\nFile {filepath} has been encrypted and overwritten.")
 
-# Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
+# Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
 
-def vaultmanager(switchcase, ciphertext=None, ref=None, master=None): # 0 is unlock master, 1 is get your password from reference, 2 is clear all
+def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to unlock the master vault, 1 is get your password from reference, 2 is clear all
     if switchcase == 0:
         with open('Vault/master.json', 'rb') as encrypted_master:
             ciphertext = encrypted_master.read()
             password = getpass.getpass("Enter your Master password: ")
-            mastervault = decrypt_aes(ciphertext, password)
+            master_vault = decrypt_aes(ciphertext, password)
             ciphertext = ""
-            masterlist = json.loads(mastervault) # 'loads' is not a typo, loads = string or bytes
-            return masterlist
+            master_list = json.loads(master_vault) # 'loads' is not a typo, loads = string or bytes
+            return master_list
 
     elif switchcase == 1:
         try:
@@ -308,51 +309,51 @@ def vaultmanager(switchcase, ciphertext=None, ref=None, master=None): # 0 is unl
             return
         password = master[int(ref)]
         try:
-            namedvault = decrypt_aes(ciphertext, password)
+            named_vault = decrypt_aes(ciphertext, password)
         except:
             print("Incorrect Password")
             return
-        return namedvault
+        return named_vault
     
     elif switchcase == 2: # clear all 
         master = ""
-        namedvault = ""
+        named_vault = ""
         ciphertext = ""
         password = ""
 
 
 ###################################################################################################################
-def messageblur(master):
+def message_blur(master):
     
-    name = input("\nPlease Enter the name of the Person whos list to use for this session:\n") # do this for enc and decryption
+    name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n") # do this for enc and decryption
     with open(f'Vault/{name}.json', 'rb') as encrypted_named:
         ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
         ref = input(f'Please Enter Your Reference Number for {name}: ')
-        namedvault = vaultmanager(1, ciphertext, int(ref), master) # vaultmanager handles encryption, case 1 is encryption
-        sharedvault = json.loads(namedvault)
+        named_vault = vault_manager(1, ciphertext, int(ref), master) # vault manager handles encryption, case 1 is encryption
+        sharedvault = json.loads(named_vault)
         # Now you have unlocked the vault to reference passwords between chosen person
 
-    refnum = secrets.randbelow(1029) # Get a secure random number | we append this number to the end
+    reference_number = secrets.randbelow(1029) # Get a secure random number | we append this number to the end
     plaintext = input("What is your message? \n")
-    password = sharedvault[int(refnum)]
+    password = sharedvault[int(reference_number)]
     #print(f'Password: {password}')
     encrypted_msg = encrypt_aes(plaintext, password)
-    sharedvault.pop(int(refnum)) # delete the password so it cant be reused also pop doesnt need assignment as it updates the variable its being used on
+    sharedvault.pop(int(reference_number)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
     # print(str(sharedvault))
     t.sleep(5)
-    postpoplength = len(sharedvault) # also append this which is length of list after removal
-    encrypted_msg = f'{encrypted_msg}:{refnum}_{postpoplength}'
-    print(f'\nYour List is now {postpoplength} entries long\n\n\n')
+    post_pop_length = len(sharedvault) # also append this which is length of list after removal
+    encrypted_msg = f'{encrypted_msg}:{reference_number}_{post_pop_length}'
+    print(f'\nYour List is now {post_pop_length} entries long\n\n\n')
 
-    privloc = "PGPKeys/private.asc" # Personal private PGP key location
+    private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
     pub = input("Friends's public key name? (without .asc)\n")
-    fullfile = f'{pub}.asc' #Recievers key
-    friendloc = "PGPKeys/" + str(fullfile)
+    full_file = f'{pub}.asc' #Receivers key
+    friend_key_location = "PGPKeys/" + str(full_file)
     msg = encrypted_msg
-    pgprun = PGPmsg.enc(privloc,friendloc,msg)
-    #print(f'Your Message:\n {pgprun}')
+    run_pgp = PGPmsg.enc(private_key_location,friend_key_location,msg)
+    #print(f'Your Message:\n {run_pgp}')
 
-    message  = hidetext(str(pgprun))
+    message  = hide_text(str(run_pgp))
 
     print(f'Encoded: >{message}<')
 
@@ -361,74 +362,74 @@ def messageblur(master):
     overwrite_vault(f'Vault/{name}.json', sharedvault, password)
     password = ""
     sharedvault = ""
-    startmenu()
+    main_menu()
 
 ##################################################################################################################
-def messageunblur(master):
-    name = input("\nPlease Enter the name of the Person whos list to use for this session:\n")
+def message_unblur(master):
+    name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
 
     with open(f'Vault/{name}.json', 'rb') as encrypted_named:
         ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
         ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
-        namedvault = vaultmanager(1, ciphertext, ref, master) # vaultmanager handles encryption, case 1 is encryption
-        sharedvault = json.loads(namedvault)
+        named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
+        sharedvault = json.loads(named_vault)
         # Now you have unlocked the vault to reference passwords between chosen person
         
     ciphertext = input("\nPlease enter your ciphertext:\n")
-    ciphertext = showtext(ciphertext)
-    privloc = "PGPKeys/private.asc" # Personal private PGP key location
+    ciphertext = show_text(ciphertext)
+    private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
 
-    sendrkey = input("Name of sender's public key for verification (without .asc)?\n ")
-    fullfile = f'{sendrkey}.asc' #senders key
-    truepath = "PGPKeys/" + str(fullfile)
-    run = PGPmsg.dec(privloc,truepath,ciphertext)
+    senders_key = input("Name of sender's public key for verification (without .asc)?\n ")
+    full_file = f'{senders_key}.asc' #senders key
+    complete_path = "PGPKeys/" + str(full_file)
+    run = PGPmsg.dec(private_key_location,complete_path,ciphertext)
     decrypted_pgp = run[0]
     verified = run[1]
     #print("Decrypted message:\n", decrypted_pgp.message)
     print("Signature verified:", bool(verified))
 
-    textseperator_pt1 = str(decrypted_pgp.message).split(":")
-    ciphertext = textseperator_pt1[0] # Ciphertext here
+    text_seperator_pass_1 = str(decrypted_pgp.message).split(":")
+    ciphertext = text_seperator_pass_1[0] # Ciphertext here
     # print(str(ciphertext))
-    metadata = textseperator_pt1[1]
-    textseperator_pt2 = metadata.split("_")
-    reference = textseperator_pt2[0] # Ref Num Here
-    postpoplength = textseperator_pt2[1] # Length after Popping here, check after popping
+    metadata = text_seperator_pass_1[1]
+    text_seperator_pass_2 = metadata.split("_")
+    reference = text_seperator_pass_2[0] # Ref Num Here
+    post_pop_length = text_seperator_pass_2[1] # Length after Popping here, check after popping
 
     password = sharedvault[int(reference)]
     decrypted_msg = decrypt_aes(ciphertext, password)
-    sharedvault.pop(int(reference)) # delete the password so it cant be reused also pop doesnt need assignment as it updates the variable its being used on
-    newlength = len(sharedvault)
-    if int(newlength) != int(postpoplength):
+    sharedvault.pop(int(reference)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
+    new_length = len(sharedvault)
+    if int(new_length) != int(post_pop_length):
         print("Error, Password sync Mismatch")
-        hashd = sha256(password.encode('utf-8')).hexdigest()
-        print(f'Password Hash: {hashd} | Password Index {reference}')
+        hashed = sha256(password.encode('utf-8')).hexdigest()
+        print(f'Password Hash: {hashed} | Password Index {reference}')
         print("\nPlease Compare with Sender\n")
 
     print(f'Message:\n\n{decrypted_msg}')
-    # friend should use list en/decoder tool to unlock and check whats at that position manually
+    # friend should use list en/decoder tool to unlock and check what's at that position manually
 
     password = master[int(ref)]
     overwrite_vault(f'Vault/{name}.json', sharedvault, password)
     password = ""
     sharedvault = ""
-    startmenu()
+    main_menu()
     
-def mastersetup():
+def master_vault_setup():
     shutil.copy('Vault/BLANK.json', 'Vault/Master.json') # make the master file
     print("\n\n\nGenerated master \n")
-    listgen('Master')
+    list_generate('Master')
     print("\nList Generated\n\n\n")
-    startmenu()
+    main_menu()
     
-def friendgen():
+def friends_vault_generator():
     friendname = input("Please enter your friends name: ")
     shutil.copy('Vault/BLANK.json', f'Vault/{friendname}.json')
-    listgen(f'{friendname}')
+    list_generate(f'{friendname}')
     print("Share file with your friend and tell them to rename it to your name (keep a copy for later)")
-    startmenu()
+    main_menu()
 
-def encryptvault():
+def encrypt_vault():
     def encrypt_existing_vault(filepath, password):
         # 1. Read the current readable JSON content
         with open(filepath, 'r') as f:
@@ -446,25 +447,25 @@ def encryptvault():
         print(f"File {filepath} has been encrypted and overwritten.")
 
     # Usage
-    askwhich = input("Are you encrypting a [F]riend\'s vault or the [M]aster vault?\n")
+    ask_type = input("Are you encrypting a [F]riend\'s vault or the [M]aster vault?\n")
     
-    if askwhich.lower() == "f":
-        ismasterencrypted = input("Is the master vault currently Encrypted? [Y]es/[N]o: ")
-        if ismasterencrypted == "y":
-            master = vaultmanager(0, ciphertext, ref)
+    if ask_type.lower() == "f":
+        master_vault_status = input("Is the master vault currently Encrypted? [Y]es/[N]o: ")
+        if master_vault_status == "y":
+            master = vault_manager(0, ciphertext, ref)
             # Unlock the Master to do any further operations
         else:    
-            fname = input("Please Enter File name to Encrypt without .json\n")
-            passwordindex = input("\nPlease Enter Password Number from Master.json to use\n    (Make sure to Note this down!)\n")
+            file_name = input("Please Enter File name to Encrypt without .json\n")
+            password_index = input("\nPlease Enter Password Number from Master.json to use\n    (Make sure to Note this down!)\n")
             with open('Vault/master.json', 'rb') as f:
                 master = f.read()
             data = json.loads(master)
-            password = data[int(passwordindex)]
-            encrypt_existing_vault(f'Vault/{fname}.json', f'{password}')
+            password = data[int(password_index)]
+            encrypt_existing_vault(f'Vault/{file_name}.json', f'{password}')
             password = ""
-        startmenu()
+        main_menu()
         
-    elif askwhich.lower() == "m":
+    elif ask_type.lower() == "m":
         
         password = input("\nPlease Enter Password to encrypt master.json\n    (Make sure to Note this down!)\n")
         with open('Vault/master.json', 'rb') as f:
@@ -472,33 +473,33 @@ def encryptvault():
         data = json.loads(master)
         encrypt_existing_vault(f'Vault/Master.json', f'{password}')
         password = ""
-        startmenu()
+        main_menu()
         
-def startmenu():
+def main_menu():
     print('\n\n- Welcome to The Encrypter! -\n')
     print('(1) Generate Your Master File')
     print('(2) Generate a Friends Shared File')
     print('(3) Encrypt all Vault Files')
     print('(4) Encrypt Text')
     print('(5) Decrypt Text')
-    startmenuchoice = input('\n > ')
+    start_menu_choice = input('\n > ')
 
-    if startmenuchoice == "1":
-        mastersetup()
-    elif startmenuchoice == "2":
-        friendgen()
-    elif startmenuchoice == "3":
-        encryptvault()
-    elif startmenuchoice == "4":
-        master = vaultmanager(0)
-        # Unlock the Master to do any further operations
+    if start_menu_choice == "1":
+        master_vault_setup()
+    elif start_menu_choice == "2":
+        friends_vault_generator()
+    elif start_menu_choice == "3":
+        encrypt_vault()
+    elif start_menu_choice == "4":
+        master = vault_manager(0)
+        # Unlock the Master Vault to do any further operations
         #print(len(master)) if 1028 then master was successfully decoded and retrieved
-        messageblur(master)
-    elif startmenuchoice == "5":
-        master = vaultmanager(0)
+        message_blur(master)
+    elif start_menu_choice == "5":
+        master = vault_manager(0)
         # Unlock the Master to do any further operations
-        messageunblur(master)
+        message_unblur(master)
 print("-- [ This tool was made by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6 ] --")
-startmenu()
+main_menu()
 
-# Orignal tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
+# Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6

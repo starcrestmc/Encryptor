@@ -43,7 +43,7 @@ switchcase = None # set the case to blank
 PGPmsg.POST() # Make sure PGP Keys are Generated (POST = Power On Self Test)
 
 
-def list_generate(file_name):
+def list_generate(file_to_write):
     class pt:
         @staticmethod
         def A():
@@ -104,7 +104,8 @@ def list_generate(file_name):
         def H():
             return rr(10000, 99999) #Maximum Security
 
-    def joiner(file):
+    def joiner(file_name):
+            data = []
             done = 0
             print("Verbose: Making Passwords..")
             for i in range(1028): # make 1028 passwords
@@ -123,12 +124,14 @@ def list_generate(file_name):
                     print(f'Made {done} of 1028')
                     data.append(finished_password)
                 
-            with open(f'Vault/{filename}.json', 'w') as f:
+            with open(f'Vault/{file_name}.json', 'w') as f:
                     #print("\nWriting, Please Wait...")
                     json.dump(data, f, indent=4)
                     print("Data Successfully Written!")
     
-    joiner(file_name)
+    joiner(file_to_write)
+    with open(f'Vault/{filetowrite}.json', 'r') as f:
+        data = json.load(f)
 # Key:
 # 0000 | u+200b is ZWSP
 # 0001 | u+200c is ZWNJ

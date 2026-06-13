@@ -326,6 +326,7 @@ def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to
 
 
 ###################################################################################################################
+print("\n-- [ This tool was made by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6 ] --")
 def message_blur(master):
     
     name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n") # do this for enc and decryption
@@ -502,7 +503,6 @@ def main_menu():
         master = vault_manager(0)
         # Unlock the Master to do any further operations
         message_unblur(master)
-print("-- [ This tool was made by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6 ] --")
 main_menu()
 
 # Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6

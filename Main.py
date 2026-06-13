@@ -130,7 +130,7 @@ def list_generate(file_to_write):
                     print("Data Successfully Written!")
     
     joiner(file_to_write)
-    with open(f'Vault/{filetowrite}.json', 'r') as f:
+    with open(f'Vault/{file_to_write}.json', 'r') as f:
         data = json.load(f)
 # Key:
 # 0000 | u+200b is ZWSP

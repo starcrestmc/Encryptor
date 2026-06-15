@@ -23,7 +23,7 @@ This work is licensed under a
 
 **Archives of this repository can be found at the following sites:**
 > - https://zenodo.org/records/20618646
-> - perma.cc - https://perma.cc/3AZX-F4PF
-> - archive.today/archive.ph - https://archive.ph/GY5Pn
-> - ghostarchive.org - https://ghostarchive.org/archive/VXQPi?wr=false
+> - perma.cc - PLACEHOLDER
+> - archive.today/archive.ph - PLACEHOLDER
+> - ghostarchive.org - PLACEHOLDER
 > - thewaybackmachine - https://web.archive.org/web/20260613014010/https://github.com/starcrestmc/Encryptor-v6/

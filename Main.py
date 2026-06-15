@@ -124,14 +124,13 @@ def list_generate(file_to_write):
                     data.append(finished_password)
                 
             with open(f'Vault/{file_name}.json', 'w') as f:
-                    #print("\nWriting, Please Wait...")
                     json.dump(data, f, indent=4)
                     print("Data Successfully Written!")
     
     joiner(file_to_write)
     with open(f'Vault/{file_to_write}.json', 'r') as f:
         data = json.load(f)
-# Key:
+# Binary - Unicode Code - Character Key:
 # 0000 | u+200b is ZWSP
 # 0001 | u+200c is ZWNJ
 # 0010 | u+200d is ZWJ
@@ -152,7 +151,7 @@ def list_generate(file_to_write):
 
 def hide_text(text):
     key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\u180b', '\u180c', '\u180d', '\u206a', '\u206b']
-    # Key map defined
+    # Key map defined to map characters to 4 bit binary chunks (nibbles)
     binary_data = ''.join(format(ord(c), '08b') for c in text)
     hidden_chars = []
     for i in range(0, len(binary_data), 4):
@@ -181,11 +180,10 @@ def show_text(text):
             four_bit_part = format(index, '04b') # Convert into a 4-bit binary string (padded with 0's)
             binary_chunks.append(four_bit_part)
             
-    full_binary = ''.join(binary_chunks) # 3. Combine all 4-bit parts into one massive binary string
-    decoded_string = [] # 4. Break the binary string back into 8-bit bytes and convert to actual characters
+    full_binary = ''.join(binary_chunks) # Combine all 4-bit parts into one massive binary string
+    decoded_string = [] # Break the binary string back into 8-bit bytes and convert to actual characters
     for i in range(0, len(full_binary), 8):
-        byte_part = full_binary[i:i+8]
-        # Convert 8-bit binary string to integer, then integer to character
+        byte_part = full_binary[i:i+8] # Convert 8-bit binary string to integer, then integer to character
         decoded_string.append(chr(int(byte_part, 2)))
     return ''.join(decoded_string)
 
@@ -203,89 +201,52 @@ def derive_key_from_password(password, salt=None):
     return key, salt
 
 def encrypt_files_aes(plaintext, password): # FOR ENCRYPTING FILES ONLY
+    salt = os.urandom(32) # Generate a random 256-bit salt (32 bytes for extra entropy) also to add seasoning :P
+    key, _ = derive_key_from_password(password, salt) # Derive a strong 256-bit key
+    iv = os.urandom(12)  # Generate a 12-byte IV (Nonce) as required by AES-GCM
+    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend())# Create AES-GCM cipher
+    aad = os.urandom(32)  # Generate a random AAD (Associated Data) for noise
 
-    # Generate a random salt (32 bytes for extra entropy)
-    salt = os.urandom(32)  # 256-bit salt
-
-    # Derive a strong 256-bit key
-    key, _ = derive_key_from_password(password, salt)
-
-    # Generate a 12-byte IV (Nonce) as required by AES-GCM
-    iv = os.urandom(12)  # 12-byte IV (standard for AES-GCM)
-
-    # Create AES-GCM cipher
-    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend())
-
-    # Generate a random AAD (Associated Data)
-    aad = os.urandom(32)  # 32 bytes of random associated data
-
-    # Encrypt the plaintext with the authentication tag
-    encryptor = cipher.encryptor()
+    encryptor = cipher.encryptor() # Encrypt the plaintext with the authentication tag
     encryptor.authenticate_additional_data(aad)
     ciphertext = encryptor.update(plaintext.encode()) + encryptor.finalize()
-
-    # Combine salt, IV, AAD, ciphertext, and tag
-    encrypted_data = base64.b64encode(salt + iv + aad + ciphertext + encryptor.tag)
-
+    
+    encrypted_data = base64.b64encode(salt + iv + aad + ciphertext + encryptor.tag) # Combine salt, IV, AAD, ciphertext, and tag
     return encrypted_data
 
 
 def encrypt_aes(plaintext, password): # FOR ENCRYPTING TEXT ONLY
+    salt = os.urandom(32)  # Generate a random 256 bit salt (32 bytes for extra entropy)
+    key, _ = derive_key_from_password(password, salt) # Derive a strong 256-bit key
+    iv = os.urandom(12)  # Generate a 12-byte IV (Nonce) as required by AES-GCM
+    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend()) # Create AES-GCM cipher
+    aad = os.urandom(32)  # Generate a random AAD (Associated Data)
 
-    
-    # Generate a random salt (32 bytes for extra entropy)
-    salt = os.urandom(32)  # 256-bit salt
-
-    # Derive a strong 256-bit key
-    key, _ = derive_key_from_password(password, salt)
-
-    # Generate a 12-byte IV (Nonce) as required by AES-GCM
-    iv = os.urandom(12)  # 12-byte IV (standard for AES-GCM)
-
-    # Create AES-GCM cipher
-    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend())
-
-    # Generate a random AAD (Associated Data)
-    aad = os.urandom(32)  # 32 bytes of random associated data
-
-    # Encrypt the plaintext with the authentication tag
-    encryptor = cipher.encryptor()
+    encryptor = cipher.encryptor() # Encrypt the plaintext with the authentication tag
     encryptor.authenticate_additional_data(aad)
     ciphertext = encryptor.update(plaintext.encode()) + encryptor.finalize()
-
-    # Combine salt, IV, AAD, ciphertext, and tag
-    encrypted_data = base64.b64encode(salt + iv + aad + ciphertext + encryptor.tag)
-
+    encrypted_data = base64.b64encode(salt + iv + aad + ciphertext + encryptor.tag) # Combine salt, IV, AAD, ciphertext, and tag
     return encrypted_data.decode()
 
-def decrypt_aes(encrypted_data, password): # FOR DECRYPTING ANYTHING
-    # Decode from Base64
-    encrypted_data = base64.b64decode(encrypted_data)
+def decrypt_aes(encrypted_data, password): # FOR DECRYPTING FILES AND TEXT
+    encrypted_data = base64.b64decode(encrypted_data) # Decode from Base64
 
-    # Extract Salt (32 bytes), IV (12 bytes), AAD (32 bytes), Ciphertext, and Tag
     salt = encrypted_data[:32]  # 32-byte salt
     iv = encrypted_data[32:44]  # 12-byte IV
     aad = encrypted_data[44:76]  # 32-byte AAD
     ciphertext = encrypted_data[76:-16]  # Ciphertext
     tag = encrypted_data[-16:]  # 16-byte Authentication Tag
+    key, _ = derive_key_from_password(password, salt) # Derive the key using the same salt (NaCl of course)
 
-    # Derive the key using the same salt
-    key, _ = derive_key_from_password(password, salt)
-
-    # Create cipher object
-    cipher = Cipher(algorithms.AES(key), modes.GCM(iv, tag), backend=default_backend())
+    cipher = Cipher(algorithms.AES(key), modes.GCM(iv, tag), backend=default_backend()) # Create cipher object
     decryptor = cipher.decryptor()
     decryptor.authenticate_additional_data(aad)
-
-    # Decrypt and verify authentication tag
-    decrypted_plaintext = decryptor.update(ciphertext) + decryptor.finalize()
-
+    decrypted_plaintext = decryptor.update(ciphertext) + decryptor.finalize() # Decrypt and verify authentication tag
     decrypted_string = decrypted_plaintext.decode('utf-8')
     return decrypted_plaintext.decode('utf-8')
 
 def overwrite_vault(filepath, content, password):
-    # contents is a list right now
-    json_string = json.dumps(content)
+    json_string = json.dumps(content) # contents is a list at this stage
     encrypted_blob = encrypt_files_aes(json_string, password)
     with open(filepath, 'wb') as f:
             f.write(encrypted_blob)
@@ -405,10 +366,8 @@ def message_blur(master, session_info, message_blur_running):
             message_blur_running = 0
             session_info.clear()
             return message_blur_running
-        #print(f'Password: {password}')
         encrypted_msg = encrypt_aes(plaintext, password)
         sharedvault.pop(int(reference_number)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
-        # print(str(sharedvault))
         t.sleep(5)
         post_pop_length = len(sharedvault) # also append this which is length of list after removal
         encrypted_msg = f'{encrypted_msg}:{reference_number}_{post_pop_length}'
@@ -417,14 +376,11 @@ def message_blur(master, session_info, message_blur_running):
         private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
         msg = encrypted_msg
         run_pgp = PGPmsg.enc(private_key_location,friend_key_location,msg)
-        #print(f'Your Message:\n {run_pgp}')
-
         message = hide_text(str(run_pgp))
 
         print(f'Encoded: >{message}<')
 
         password = master[int(ref)]
-        
         overwrite_vault(f'Vault/{name}.json', sharedvault, password)
         password = ""
         sharedvault = ""
@@ -488,6 +444,7 @@ def message_unblur(master, session_info, message_unblur_running):
                 session_info.clear()
                 message_unblur_running = 0
                 return message_unblur_running
+            
         except IndexError:
             name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
@@ -552,6 +509,7 @@ def message_unblur(master, session_info, message_unblur_running):
         decrypted_msg = decrypt_aes(ciphertext, password)
         sharedvault.pop(int(reference)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
         new_length = len(sharedvault)
+        
         if int(new_length) != int(post_pop_length):
             print("Error, Password sync Mismatch")
             hashed = sha256(password.encode('utf-8')).hexdigest()
@@ -565,6 +523,7 @@ def message_unblur(master, session_info, message_unblur_running):
         overwrite_vault(f'Vault/{name}.json', sharedvault, password)
         password = ""
         sharedvault = ""
+        
         ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back")
         if ask_back == None:
             continue # loop back
@@ -596,17 +555,12 @@ def friends_vault_generator():
 
 def encrypt_vault():
     def encrypt_existing_vault(filepath, password):
-        # 1. Read the current readable JSON content
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r') as f: # Read the current readable JSON content
             original_content = f.read()
 
-        # 2. Encrypt the content using your function
-        # This turns the text into the Base64 bytes blob
-        encrypted_blob = encrypt_files_aes(original_content, password)
+        encrypted_blob = encrypt_files_aes(original_content, password) # Encrypt the content using your function (Gives base64 output)
 
-        # 3. Overwrite the file with the encrypted version
-        # We use 'wb' because your function returns bytes
-        with open(filepath, 'wb') as f:
+        with open(filepath, 'wb') as f: # Overwrite the file with the encrypted version, use wb cause function returns bytes
             f.write(encrypted_blob)
             
         print(f"File {filepath} has been encrypted and overwritten.")
@@ -617,8 +571,7 @@ def encrypt_vault():
     if ask_type.lower() == "f":
         master_vault_status = input("Is the master vault currently Encrypted? [Y]es/[N]o: ")
         if master_vault_status == "y":
-            master = vault_manager(0, ciphertext, ref)
-            # Unlock the Master to do any further operations
+            master = vault_manager(0, ciphertext, ref) # Unlock the Master to do any further operations
         else:    
             file_name = input("Please Enter File name to Encrypt without .json\n")
             password_index = input("\nPlease Enter Password Number from Master.json to use\n    (Make sure to Note this down!)\n")
@@ -677,7 +630,7 @@ while started == 1:
         elif start_menu_choice == "4":
             master = vault_manager(0)
             # Unlock the Master Vault to do any further operations
-            #print(len(master)) if 1028 then master was successfully decoded and retrieved
+            #print(len(master)) # if 1028 on first run then master was successfully decoded and retrieved
             try:
                 message_blur_running = 1
                 message_blur(master, session_info, message_blur_running)
@@ -688,6 +641,7 @@ while started == 1:
         elif start_menu_choice == "5":
             master = vault_manager(0)
             # Unlock the Master to do any further operations
+            #print(len(master)) # if 1028 on first run then master was successfully decoded and retrieved
             try:
                 message_unblur_running = 1
                 message_unblur(master, session_info, message_unblur_running)
@@ -699,6 +653,7 @@ while started == 1:
             print("Invalid Option!")
             print("")
             continue
+        
     except KeyboardInterrupt:
         message_blur_running = 0
         message_unblur_running = 0

@@ -640,6 +640,7 @@ while started == 1:
             master = vault_manager(0)
             if master is None:
                 print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
+                continue
             else:
                 pass
             # Unlock the Master Vault to do any further operations
@@ -655,6 +656,7 @@ while started == 1:
             master = vault_manager(0)
             if master is None:
                 print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
+                continue
             else:
                 pass
             # Unlock the Master to do any further operations

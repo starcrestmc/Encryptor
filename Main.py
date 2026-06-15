@@ -30,8 +30,8 @@ from EXTRAMODULES import pre
 import nltk
 from nltk.corpus import brown
 from nltk import pos_tag
-nltk.download('brown')
-nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('brown', quiet=True)
+nltk.download('averaged_perceptron_tagger_eng', quiet=True)
 
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
@@ -293,7 +293,6 @@ print("\n-- [ This tool was made by StarcrestMC - https://github.com/starcrestmc
 def message_blur(master, session_info, message_blur_running):
     while message_blur_running == 1:
         try:
-            temp_var = session_info[1]
             vault_name = session_info[0]
             pgp_name = session_info[1]
             print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
@@ -356,7 +355,7 @@ def message_blur(master, session_info, message_blur_running):
             full_file = f'{pub}.asc' #Receivers key
             friend_key_location = "PGPKeys/" + str(full_file)
 
-        reference_number = secrets.randbelow(1029) # Get a secure random number | we append this number to the end
+        reference_number = secrets.randbelow(len(sharedvault)) # Get a secure random number | we append this number to the end
         plaintext = input("What is your message? \n")
         try:
             password = sharedvault[int(reference_number)]
@@ -404,7 +403,6 @@ def message_blur(master, session_info, message_blur_running):
 def message_unblur(master, session_info, message_unblur_running):
     while message_unblur_running == 1:
         try:
-            temp_var = session_info[1]
             vault_name = session_info[0]
             pgp_name = session_info[1]
             print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')

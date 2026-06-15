@@ -297,7 +297,7 @@ def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to
     if switchcase == 0:
         with open('Vault/master.json', 'rb') as encrypted_master:
             ciphertext = encrypted_master.read()
-            password = getpass.getpass("Enter your Master password: ")
+            password = getpass.getpass("Enter your Master password (This won\'t show when you type it): ")
             master_vault = decrypt_aes(ciphertext, password)
             ciphertext = ""
             master_list = json.loads(master_vault) # 'loads' is not a typo, loads = string or bytes
@@ -341,7 +341,7 @@ def message_blur(master, session_info, message_blur_running):
                 name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                    ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                    ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it): ")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                     if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                         message_blur_running = 0
@@ -367,7 +367,7 @@ def message_blur(master, session_info, message_blur_running):
             name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                 named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                 if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                     message_blur_running = 0
@@ -444,7 +444,7 @@ def message_unblur(master, session_info, message_unblur_running):
                 name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                    ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                    ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                     if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                         message_unblur_running = 0
@@ -472,7 +472,7 @@ def message_unblur(master, session_info, message_unblur_running):
             name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                 named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                 if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                     message_unblur_running = 0

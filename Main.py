@@ -576,7 +576,7 @@ def encrypt_vault():
     if ask_type.lower() == "f":
         master_vault_status = input("Is the master vault currently Encrypted? [Y]es/[N]o: ")
         if master_vault_status == "y":
-            master = vault_manager(0, ciphertext, ref) # Unlock the Master to do any further operations
+            master = vault_manager(0) # Unlock the Master to do any further operations
             if master == None:
                 print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
                 return
@@ -594,7 +594,6 @@ def encrypt_vault():
         return
         
     elif ask_type.lower() == "m":
-        
         password = input("\nPlease Enter Password to encrypt master.json\n    (Make sure to Note this down!)\n")
         with open('Vault/master.json', 'rb') as f:
             master = f.read()

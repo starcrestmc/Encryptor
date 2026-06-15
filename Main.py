@@ -308,7 +308,7 @@ def message_blur(master, session_info, message_blur_running):
                 name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                    ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it): ")
+                    ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it): ")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                     if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                         session_info.clear()
@@ -325,7 +325,7 @@ def message_blur(master, session_info, message_blur_running):
                         return message_blur_running
                     # Now you have unlocked the vault to reference passwords between chosen person
 
-                pub = input("Friends's public key name? (without .asc)\n")
+                pub = input("\nFriends's public key name? (without .asc)\n")
                 full_file = f'{pub}.asc' #Receivers key
                 friend_key_location = "PGPKeys/" + str(full_file)
                 
@@ -340,7 +340,7 @@ def message_blur(master, session_info, message_blur_running):
             name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
+                ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                 named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                 if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                     message_blur_running = 0
@@ -358,12 +358,12 @@ def message_blur(master, session_info, message_blur_running):
                     return message_blur_running
                 # Now you have unlocked the vault to reference passwords between chosen person
 
-            pub = input("Friends's public key name? (without .asc)\n")
+            pub = input("\nFriends's public key name? (without .asc)\n")
             full_file = f'{pub}.asc' #Receivers key
             friend_key_location = "PGPKeys/" + str(full_file)
 
         reference_number = secrets.randbelow(len(sharedvault)) # Get a secure random number | we append this number to the end
-        plaintext = input("What is your message? \n")
+        plaintext = input("\nWhat is your message? \n")
         try:
             password = sharedvault[int(reference_number)]
         except:
@@ -418,7 +418,7 @@ def message_unblur(master, session_info, message_unblur_running):
                 name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                    ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
+                    ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                     if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                         message_unblur_running = 0
@@ -454,7 +454,7 @@ def message_unblur(master, session_info, message_unblur_running):
             name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-                ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
+                ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                 named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                 if named_vault == None: # Exit if the function returns empty (Incorrect Password)
                     message_unblur_running = 0

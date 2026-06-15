@@ -256,13 +256,20 @@ def overwrite_vault(filepath, content, password):
 
 def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to unlock the master vault, 1 is get your password from reference, 2 is clear all
     if switchcase == 0:
-        with open('Vault/master.json', 'rb') as encrypted_master:
-            ciphertext = encrypted_master.read()
-            password = getpass.getpass("Enter your Master password (This won\'t show when you type it): ")
-            master_vault = decrypt_aes(ciphertext, password)
-            ciphertext = ""
-            master_list = json.loads(master_vault) # 'loads' is not a typo, loads = string or bytes
-            return master_list
+        ask_master_encrypted = input("Is master.json encrypted? [Y]es/[N]o: ")
+        if ask_master_encrypted.lower() == "y":
+            with open('Vault/master.json', 'rb') as encrypted_master:
+                ciphertext = encrypted_master.read()
+                password = getpass.getpass("Enter your Master password (This won\'t show when you type it): ")
+                master_vault = decrypt_aes(ciphertext, password)
+                ciphertext = ""
+                master_list = json.loads(master_vault) # 'loads' is not a typo, loads = string or bytes
+                return master_list
+        elif ask_master_encrypted.lower() == "n":
+            return
+        else:
+            print("Invalid Option")
+            return
 
     elif switchcase == 1:
         try:
@@ -570,6 +577,11 @@ def encrypt_vault():
         master_vault_status = input("Is the master vault currently Encrypted? [Y]es/[N]o: ")
         if master_vault_status == "y":
             master = vault_manager(0, ciphertext, ref) # Unlock the Master to do any further operations
+            if master == None:
+                print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
+                return
+            else:
+                pass
         else:    
             file_name = input("Please Enter File name to Encrypt without .json\n")
             password_index = input("\nPlease Enter Password Number from Master.json to use\n    (Make sure to Note this down!)\n")
@@ -627,6 +639,10 @@ while started == 1:
                 continue
         elif start_menu_choice == "4":
             master = vault_manager(0)
+            if master is None:
+                print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
+            else:
+                pass
             # Unlock the Master Vault to do any further operations
             #print(len(master)) # if 1028 on first run then master was successfully decoded and retrieved
             try:
@@ -638,6 +654,10 @@ while started == 1:
                 continue
         elif start_menu_choice == "5":
             master = vault_manager(0)
+            if master is None:
+                print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
+            else:
+                pass
             # Unlock the Master to do any further operations
             #print(len(master)) # if 1028 on first run then master was successfully decoded and retrieved
             try:

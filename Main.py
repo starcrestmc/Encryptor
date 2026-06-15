@@ -15,8 +15,8 @@ try:
     import shutil
     import pickle as pk
 except:
-    reqs = input("Would you like to install the Requirements? [Y]es/[N]o: ")
-    if reqs.lower() == "y":
+    reqirements_install = input("Would you like to install the Requirements? [Y]es/[N]o: ")
+    if reqirements_install.lower() == "y":
         os.system('cmd /c "color a & echo [Python]: Installing Requirements & @echo off & pip install -r requirements.txt & timeout /t 3 /nobreak"')
     else:
         print("This script wont run without pgpy, hashlib, nltk and cryptography")
@@ -658,7 +658,7 @@ while started == 1:
         message_blur_running = 0
         message_unblur_running = 0
         session_info.clear()
-        ask_exit = input("Are you sure you want to exit? (Y)es/(N)o: ")
+        ask_exit = input("Are you sure you want to exit? [Y]es/[N]o: ")
         if ask_exit.lower() == "y":
             exit()
         else:

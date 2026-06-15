@@ -1,5 +1,4 @@
 # Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
-
 from random import randrange as rr
 from random import choice as ch
 import time as t
@@ -306,7 +305,7 @@ def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to
 
     elif switchcase == 1:
         try:
-            print(master)
+            temp = master
         except:
             print("Please unlock Master Vault first")
             return
@@ -314,8 +313,10 @@ def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to
         try:
             named_vault = decrypt_aes(ciphertext, password)
         except:
-            print("Incorrect Password")
+            print("Error: Incorrect Password!")
+            print("")
             return
+        
         return named_vault
     
     elif switchcase == 2: # clear all 
@@ -323,115 +324,248 @@ def vault_manager(switchcase, ciphertext=None, ref=None, master=None): # 0 is to
         named_vault = ""
         ciphertext = ""
         password = ""
+        return master, named_vault, ciphertext, password
 
 
 ###################################################################################################################
 print("\n-- [ This tool was made by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6 ] --")
-def message_blur(master):
-    
-    name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n") # do this for enc and decryption
-    with open(f'Vault/{name}.json', 'rb') as encrypted_named:
-        ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-        ref = input(f'Please Enter Your Reference Number for {name}: ')
-        named_vault = vault_manager(1, ciphertext, int(ref), master) # vault manager handles encryption, case 1 is encryption
-        sharedvault = json.loads(named_vault)
-        # Now you have unlocked the vault to reference passwords between chosen person
+def message_blur(master, session_info, message_blur_running):
+    while message_blur_running == 1:
+        try:
+            temp_var = session_info[1]
+            vault_name = session_info[0]
+            pgp_name = session_info[1]
+            print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
+            change_ask = input("Would you like to use someone elses Vault and PGP Key? (Y)es/(N)o")
+            if change_ask == "y":
+                name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+                with open(f'Vault/{name}.json', 'rb') as encrypted_named:
+                    ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
+                    ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                    named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
+                    if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                        message_blur_running = 0
+                        return message_blur_running
+                    else:
+                        pass
+                    try:
+                        sharedvault = json.loads(named_vault)
+                    except:
+                        print(f'{name}\'s Vault is Corrupt or Desynced, Please Regenerate it')
+                        print("")
+                        message_blur_running = 0
+                        return message_blur_running
+                    # Now you have unlocked the vault to reference passwords between chosen person
 
-    reference_number = secrets.randbelow(1029) # Get a secure random number | we append this number to the end
-    plaintext = input("What is your message? \n")
-    password = sharedvault[int(reference_number)]
-    #print(f'Password: {password}')
-    encrypted_msg = encrypt_aes(plaintext, password)
-    sharedvault.pop(int(reference_number)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
-    # print(str(sharedvault))
-    t.sleep(5)
-    post_pop_length = len(sharedvault) # also append this which is length of list after removal
-    encrypted_msg = f'{encrypted_msg}:{reference_number}_{post_pop_length}'
-    print(f'\nYour List is now {post_pop_length} entries long\n\n\n')
+                pub = input("Friends's public key name? (without .asc)\n")
+                full_file = f'{pub}.asc' #Receivers key
+                friend_key_location = "PGPKeys/" + str(full_file)
+                
+            elif change_ask == "n":
+                pass
+        except IndexError:
+            name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+            with open(f'Vault/{name}.json', 'rb') as encrypted_named:
+                ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
+                ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
+                if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                    message_blur_running = 0
+                    session_info.clear()
+                    return message_blur_running
+                else:
+                    pass
+                try:
+                    sharedvault = json.loads(named_vault)
+                except:
+                    print(f'{name}\'s Vault is Corrupt, Please Regenerate it')
+                    print("")
+                    message_blur_running = 0
+                    session_info.clear()
+                    return message_blur_running
+                # Now you have unlocked the vault to reference passwords between chosen person
 
-    private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
-    pub = input("Friends's public key name? (without .asc)\n")
-    full_file = f'{pub}.asc' #Receivers key
-    friend_key_location = "PGPKeys/" + str(full_file)
-    msg = encrypted_msg
-    run_pgp = PGPmsg.enc(private_key_location,friend_key_location,msg)
-    #print(f'Your Message:\n {run_pgp}')
+            pub = input("Friends's public key name? (without .asc)\n")
+            full_file = f'{pub}.asc' #Receivers key
+            friend_key_location = "PGPKeys/" + str(full_file)
 
-    message  = hide_text(str(run_pgp))
+        reference_number = secrets.randbelow(1029) # Get a secure random number | we append this number to the end
+        plaintext = input("What is your message? \n")
+        try:
+            password = sharedvault[int(reference_number)]
+        except:
+            print("Error: {name}\'s Vault is Corrupt, Please Regenate it")
+            print("")
+            message_blur_running = 0
+            session_info.clear()
+            return message_blur_running
+        #print(f'Password: {password}')
+        encrypted_msg = encrypt_aes(plaintext, password)
+        sharedvault.pop(int(reference_number)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
+        # print(str(sharedvault))
+        t.sleep(5)
+        post_pop_length = len(sharedvault) # also append this which is length of list after removal
+        encrypted_msg = f'{encrypted_msg}:{reference_number}_{post_pop_length}'
+        print(f'\nYour List is now {post_pop_length} entries long\n\n\n')
 
-    print(f'Encoded: >{message}<')
+        private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
+        msg = encrypted_msg
+        run_pgp = PGPmsg.enc(private_key_location,friend_key_location,msg)
+        #print(f'Your Message:\n {run_pgp}')
 
-    password = master[int(ref)]
-    
-    overwrite_vault(f'Vault/{name}.json', sharedvault, password)
-    password = ""
-    sharedvault = ""
-    main_menu()
+        message = hide_text(str(run_pgp))
+
+        print(f'Encoded: >{message}<')
+
+        password = master[int(ref)]
+        
+        overwrite_vault(f'Vault/{name}.json', sharedvault, password)
+        password = ""
+        sharedvault = ""
+
+        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back")
+        if ask_back == None:
+            continue
+        else:
+            session_info.clear()
+            message_blur_running = 0
+            return message_blur_running
 
 ##################################################################################################################
-def message_unblur(master):
-    name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+def message_unblur(master, session_info, message_unblur_running):
+    while message_unblur_running == 1:
+        try:
+            temp_var = session_info[1]
+            vault_name = session_info[0]
+            pgp_name = session_info[1]
+            print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
+            change_ask = input("Would you like to use someone elses Vault and PGP Key? (Y)es/(N)o")
+            if change_ask.lower() == "y":
+                name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+                with open(f'Vault/{name}.json', 'rb') as encrypted_named:
+                    ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
+                    ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                    named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
+                    if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                        message_unblur_running = 0
+                        session_info.clear()
+                        return message_unblur_running
+                    else:
+                        pass
+                    
+                    try:
+                        sharedvault = json.loads(named_vault)
+                    except:
+                        print(f'{name}\'s Vault is Corrupt or Desynced, Please Regenerate it')
+                        print("")
+                        message_unblur_running = 0
+                        session_info.clear()
+                        return message_unblur_running
+                    # Now you have unlocked the vault to reference passwords between chosen person
 
-    with open(f'Vault/{name}.json', 'rb') as encrypted_named:
-        ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
-        ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
-        named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
-        sharedvault = json.loads(named_vault)
-        # Now you have unlocked the vault to reference passwords between chosen person
-        
-    ciphertext = input("\nPlease enter your ciphertext:\n")
-    ciphertext = show_text(ciphertext)
-    private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
+                senders_key = input("Name of sender's public key for later verification (without .asc)?\n ")
+                full_file = f'{senders_key}.asc' #senders key
+                complete_path = "PGPKeys/" + str(full_file)
+            else:
+                pass
+        except IndexError:
+            name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+            with open(f'Vault/{name}.json', 'rb') as encrypted_named:
+                ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
+                ref = getpass.getpass("Please Enter Your Reference Number for {name}: ")
+                named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
+                if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                    message_unblur_running = 0
+                    session_info.clear()
+                    return message_unblur_running
+                else:
+                    pass
+                try:
+                    sharedvault = json.loads(named_vault)
+                except:
+                    print(f'{name}\'s Vault is Corrupt, Please Regenerate it')
+                    print("")
+                    message_unblur_running = 0
+                    session_info.clear()
+                    return message_unblur_running
+                # Now you have unlocked the vault to reference passwords between chosen person
 
-    senders_key = input("Name of sender's public key for verification (without .asc)?\n ")
-    full_file = f'{senders_key}.asc' #senders key
-    complete_path = "PGPKeys/" + str(full_file)
-    run = PGPmsg.dec(private_key_location,complete_path,ciphertext)
-    decrypted_pgp = run[0]
-    verified = run[1]
-    #print("Decrypted message:\n", decrypted_pgp.message)
-    print("Signature verified:", bool(verified))
+            senders_key = input("Name of sender's public key for later verification (without .asc)?\n ")
+            full_file = f'{senders_key}.asc' # Sender's PGP key
+            complete_path = "PGPKeys/" + str(full_file)
+            session_info = [f'{name}', f'{senders_key}'] # save the name of the current recievers vault and pgp key
+            
+        ciphertext = input("\nPlease enter your ciphertext:\n")
+        try:
+            ciphertext = show_text(ciphertext)
+        except:
+            print("Error, Ciphertext is corrupt or Incorrect Sender was used!")
+            print("")
+            message_unblur_running = 0
+            session_info.clear()
+            return message_unblur_running
+        private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
 
-    text_seperator_pass_1 = str(decrypted_pgp.message).split(":")
-    ciphertext = text_seperator_pass_1[0] # Ciphertext here
-    # print(str(ciphertext))
-    metadata = text_seperator_pass_1[1]
-    text_seperator_pass_2 = metadata.split("_")
-    reference = text_seperator_pass_2[0] # Ref Num Here
-    post_pop_length = text_seperator_pass_2[1] # Length after Popping here, check after popping
+        try:
+            run = PGPmsg.dec(private_key_location,complete_path,ciphertext)
+        except:
+            print("Error: Message is Corrupt or Incorrect PGP Key used")
+            print("")
+            message_unblur_running = 0
+            session_info.clear()
+            return message_unblur_running
+            
+        decrypted_pgp = run[0]
+        verified = run[1]
+        #print("Decrypted message:\n", decrypted_pgp.message)
+        print("Signature verified:", bool(verified))
 
-    password = sharedvault[int(reference)]
-    decrypted_msg = decrypt_aes(ciphertext, password)
-    sharedvault.pop(int(reference)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
-    new_length = len(sharedvault)
-    if int(new_length) != int(post_pop_length):
-        print("Error, Password sync Mismatch")
-        hashed = sha256(password.encode('utf-8')).hexdigest()
-        print(f'Password Hash: {hashed} | Password Index {reference}')
-        print("\nPlease Compare with Sender\n")
+        text_seperator_pass_1 = str(decrypted_pgp.message).split(":")
+        ciphertext = text_seperator_pass_1[0] # Ciphertext here
+        # print(str(ciphertext))
+        metadata = text_seperator_pass_1[1]
+        text_seperator_pass_2 = metadata.split("_")
+        reference = text_seperator_pass_2[0] # Ref Num Here
+        post_pop_length = text_seperator_pass_2[1] # Length after Popping here, check after popping
 
-    print(f'Message:\n\n{decrypted_msg}')
-    # friend should use list en/decoder tool to unlock and check what's at that position manually
+        password = sharedvault[int(reference)]
+        decrypted_msg = decrypt_aes(ciphertext, password)
+        sharedvault.pop(int(reference)) # delete the password so it cant be reused also pop doesn't need assignment as it updates the variable its being used on
+        new_length = len(sharedvault)
+        if int(new_length) != int(post_pop_length):
+            print("Error, Password sync Mismatch")
+            hashed = sha256(password.encode('utf-8')).hexdigest()
+            print(f'Password Hash: {hashed} | Password Index {reference}')
+            print("\nPlease Compare with Sender\n")
 
-    password = master[int(ref)]
-    overwrite_vault(f'Vault/{name}.json', sharedvault, password)
-    password = ""
-    sharedvault = ""
-    main_menu()
+        print(f'Message:\n\n{decrypted_msg}')
+        # friend should use list en/decoder tool to unlock and check what's at that position manually
+
+        password = master[int(ref)]
+        overwrite_vault(f'Vault/{name}.json', sharedvault, password)
+        password = ""
+        sharedvault = ""
+        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back")
+        if ask_back == None:
+            continue # loop back
+        else:
+            message_unblur_running = 0
+            session_info.clear()
+            return message_unblur_running
     
 def master_vault_setup():
     shutil.copy('Vault/BLANK.json', 'Vault/Master.json') # make the master file
     print("\n\n\nGenerated master \n")
     list_generate('Master')
     print("\nList Generated\n\n\n")
-    main_menu()
+    return
     
 def friends_vault_generator():
     friend_name = input("Please enter your friends name: ")
     shutil.copy('Vault/BLANK.json', f'Vault/{friend_name}.json')
     list_generate(f'{friend_name}')
     print("Share file with your friend and tell them to rename it to your name (keep a copy for later)")
-    main_menu()
+    return
 
 def encrypt_vault():
     def encrypt_existing_vault(filepath, password):
@@ -467,7 +601,7 @@ def encrypt_vault():
             password = data[int(password_index)]
             encrypt_existing_vault(f'Vault/{file_name}.json', f'{password}')
             password = ""
-        main_menu()
+        return
         
     elif ask_type.lower() == "m":
         
@@ -477,32 +611,74 @@ def encrypt_vault():
         data = json.loads(master)
         encrypt_existing_vault(f'Vault/Master.json', f'{password}')
         password = ""
-        main_menu()
+        return
         
-def main_menu():
-    print('\n\n- Welcome to The Encrypter! -\n')
-    print('(1) Generate Your Master File')
-    print('(2) Generate a Friends Shared File')
-    print('(3) Encrypt all Vault Files')
-    print('(4) Encrypt Text')
-    print('(5) Decrypt Text')
-    start_menu_choice = input('\n > ')
+session_info = []
+message_blur_running = 0
+message_unblur_running = 0
+started = 1
 
-    if start_menu_choice == "1":
-        master_vault_setup()
-    elif start_menu_choice == "2":
-        friends_vault_generator()
-    elif start_menu_choice == "3":
-        encrypt_vault()
-    elif start_menu_choice == "4":
-        master = vault_manager(0)
-        # Unlock the Master Vault to do any further operations
-        #print(len(master)) if 1028 then master was successfully decoded and retrieved
-        message_blur(master)
-    elif start_menu_choice == "5":
-        master = vault_manager(0)
-        # Unlock the Master to do any further operations
-        message_unblur(master)
-main_menu()
+while started == 1:
+    try:
+        print('\n\n- Welcome to The Encrypter! -\n')
+        print('(1) Generate Your Master File')
+        print('(2) Generate a Friends Shared File')
+        print('(3) Encrypt all Vault Files')
+        print('(4) Encrypt Text')
+        print('(5) Decrypt Text')
+        print('[Press CTRL+C at any time to return to this Menu]')
+        start_menu_choice = input('\n > ')
 
+        if start_menu_choice == "1":
+            try:
+                master_vault_setup()
+            except KeyboardInterrupt:
+                session_info.clear()
+                continue
+        elif start_menu_choice == "2":
+            try:
+                friends_vault_generator()
+            except KeyboardInterrupt:
+                session_info.clear()
+                continue
+        elif start_menu_choice == "3":
+            try:
+                encrypt_vault()
+            except KeyboardInterrupt:
+                session_info.clear()
+                continue
+        elif start_menu_choice == "4":
+            master = vault_manager(0)
+            # Unlock the Master Vault to do any further operations
+            #print(len(master)) if 1028 then master was successfully decoded and retrieved
+            try:
+                message_blur_running = 1
+                message_blur(master, session_info, message_blur_running)
+            except KeyboardInterrupt:
+                session_info.clear()
+                message_blur_running = 0
+                continue
+        elif start_menu_choice == "5":
+            master = vault_manager(0)
+            # Unlock the Master to do any further operations
+            try:
+                message_unblur_running = 1
+                message_unblur(master, session_info, message_unblur_running)
+            except KeyboardInterrupt:
+                session_info.clear()
+                message_unblur_running = 0
+                continue
+        else:
+            print("Invalid Option!")
+            print("")
+            continue
+    except KeyboardInterrupt:
+        message_blur_running = 0
+        message_unblur_running = 0
+        session_info.clear()
+        ask_exit = input("Are you sure you want to exit? (Y)es/(N)o: ")
+        if ask_exit.lower() == "y":
+            exit()
+        else:
+            continue
 # Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6

@@ -336,14 +336,15 @@ def message_blur(master, session_info, message_blur_running):
             vault_name = session_info[0]
             pgp_name = session_info[1]
             print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
-            change_ask = input("Would you like to use someone elses Vault and PGP Key? (Y)es/(N)o")
-            if change_ask == "y":
-                name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+            change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session") or None # Default to None if nothing is entered
+            if change_ask.lower() == "edit":
+                name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                     ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it): ")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
                     if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                        session_info.clear()
                         message_blur_running = 0
                         return message_blur_running
                     else:
@@ -361,10 +362,15 @@ def message_blur(master, session_info, message_blur_running):
                 full_file = f'{pub}.asc' #Receivers key
                 friend_key_location = "PGPKeys/" + str(full_file)
                 
-            elif change_ask == "n":
+            elif change_ask == None:
                 pass
+
+            else:
+                print("Invalid Option")
+                print("")
+                return
         except IndexError:
-            name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+            name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                 ref = getpass.getpass("Please Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
@@ -423,14 +429,21 @@ def message_blur(master, session_info, message_blur_running):
         password = ""
         sharedvault = ""
 
-        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back")
+        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back") or None
         if ask_back == None:
             continue
-        else:
+        elif ask_back.lower() == "exit":
             session_info.clear()
             message_blur_running = 0
             return message_blur_running
 
+        else:
+            print("Invalid Option")
+            print("")
+            session_info.clear()
+            message_blur_running = 0
+            return message_blur_running
+        
 ##################################################################################################################
 def message_unblur(master, session_info, message_unblur_running):
     while message_unblur_running == 1:
@@ -439,8 +452,8 @@ def message_unblur(master, session_info, message_unblur_running):
             vault_name = session_info[0]
             pgp_name = session_info[1]
             print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
-            change_ask = input("Would you like to use someone elses Vault and PGP Key? (Y)es/(N)o")
-            if change_ask.lower() == "y":
+            change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session") or None # Default to None if nothing is entered
+            if change_ask.lower() == "edit":
                 name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
@@ -466,8 +479,15 @@ def message_unblur(master, session_info, message_unblur_running):
                 senders_key = input("Name of sender's public key for later verification (without .asc)?\n ")
                 full_file = f'{senders_key}.asc' #senders key
                 complete_path = "PGPKeys/" + str(full_file)
-            else:
+            elif change_ask == None:
                 pass
+
+            else:
+                print("Invalid Option")
+                print("")
+                session_info.clear()
+                message_unblur_running = 0
+                return message_unblur_running
         except IndexError:
             name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
@@ -548,9 +568,16 @@ def message_unblur(master, session_info, message_unblur_running):
         ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back")
         if ask_back == None:
             continue # loop back
-        else:
-            message_unblur_running = 0
+        elif ask_back.lower() == "exit":
             session_info.clear()
+            message_unblur_running = 0
+            return message_unblur_running
+
+        else:
+            print("Invalid Option")
+            print("")
+            session_info.clear()
+            message_unblur_running = 0
             return message_unblur_running
     
 def master_vault_setup():

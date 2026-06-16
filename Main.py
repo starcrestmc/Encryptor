@@ -1,6 +1,6 @@
 # Original tool built by StarcrestMC - https://github.com/starcrestmc/Encryptor-v6
-from random import randrange as rr
-from random import choice as ch
+from secrets import randbelow as rb
+from secrets import choice as ch
 import time as t
 import os
 try:
@@ -47,7 +47,7 @@ def list_generate(file_to_write):
         @staticmethod
         def A():
             crs = ['@', '_', '!', '%', '^', '&', '>', '<', '?', '.', '#', '~', '-']
-            x = rr(1, 13)
+            x = rb(13)
             return crs[x]
 
     # Word file caches
@@ -71,7 +71,7 @@ def list_generate(file_to_write):
 
         def D(): # middle character
             chs = ['(_)', '[_]', '{_}', '(-)', '[-]', '{-}', '(+)', '[+]', '{+}', '(=)', '[=]', '{=}', '(&)', '[&]', '{&}', '(%)', '[%]', '{%}']
-            x = rr(0, 18) # Maximum Security
+            x = rb(18) # Maximum Security
             return chs[x]
 
         def E(): #adjective
@@ -95,13 +95,13 @@ def list_generate(file_to_write):
         def G(): # character either side of the end part
             c1 = ['(#', '[#', '{#', '($', '[$', '{$', '(=', '[=', '{='] # Security LV.1 could be index 0-2 and Security LV 2 could be index 3-11
             mpr = {'(#': ')', '[#': ']', '{#': '}', '($': ')', '[$': ']', '{$': '}', '(=': ')', '[=': ']', '{=': '}'}
-            a = rr(0, 8) # Maximum Security
+            a = rb(9) # Maximum Security
             l = c1[a]
             r = mpr[l]
             return l, r
 
         def H():
-            return rr(10000, 99999) #Maximum Security
+            return rb(90000) + 10000 # Maximum Security, rb is randbelow and +10000 is ofset (starting at)
 
     def joiner(file_name):
             data = []

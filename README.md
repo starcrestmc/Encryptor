@@ -22,8 +22,8 @@ This work is licensed under a
 [cc-by-nc-nd-shield]: https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg
 
 **Archives of this repository can be found at the following sites:**
-> - https://zenodo.org/records/20708812
-> - perma.cc - https://perma.cc/8K6T-8543
-> - archive.today/archive.ph - https://archive.ph/aKmr9
-> - ghostarchive.org - https://ghostarchive.org/archive/aT7DX
+> - https://zenodo.org/records/20721745
+> - perma.cc - PLACEHOLDER
+> - archive.today/archive.ph - PLACEHOLDER
+> - ghostarchive.org - PLACEHOLDER
 > - thewaybackmachine - https://web.archive.org/web/20260615025237/https://github.com/starcrestmc/Encryptor-v6

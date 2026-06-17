@@ -380,6 +380,12 @@ Section 8 -- Interpretation.
      that apply to the Licensor or You, including from the legal
      processes of any jurisdiction or authority.
 
+Section 9 -- Exemptions.
+
+Sham Haque has explicit permission from myself (starcrestmc), to create derivatives of this project provided they are Non-Commercial (NC) and still contain publicly viewable attribution (BY). However, any downstream projects to his derivative are licensed under CC-BY-NC-ND. His repository can be found at https://github.com/gbshahaq. 
+
+Any repositories not listed here who are Commercially Using, Modifying, or Not Attributing this code are going against this project's CC-BY-NC-ND 4.0 International License and are forfeitting any rights to Access or Use this work in any way shape or form. By violating these terms, such unauthorized parties instantly forfeit all rights to access or use this work, thereby rendering themselves liable for immediate statutory and financial damages, and explicitly consenting to the initiation of formal copyright infringement litigation (including DMCA enforcement and civil lawsuits) to recover the infringer's illicit profits, market-rate licensing fees, statutory damages, and all associated legal fees.
+
 =======================================================================
 
 Creative Commons is not a party to its public

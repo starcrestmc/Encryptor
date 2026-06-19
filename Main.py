@@ -391,7 +391,7 @@ def message_blur(master, session_info, message_blur_running):
         password = ""
         sharedvault = ""
 
-        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back") or None
+        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back\n") or None
         if ask_back == None:
             continue
         elif ask_back.lower() == "exit":
@@ -437,7 +437,7 @@ def message_unblur(master, session_info, message_unblur_running):
                         return message_unblur_running
                     # Now you have unlocked the vault to reference passwords between chosen person
 
-                senders_key = input("Name of sender's public key for later verification (without .asc)?\n ")
+                senders_key = input("Name of sender's public key for later verification (without .asc)?\n")
                 full_file = f'{senders_key}.asc' #senders key
                 complete_path = "PGPKeys/" + str(full_file)
             elif change_ask == None:
@@ -472,7 +472,7 @@ def message_unblur(master, session_info, message_unblur_running):
                     return message_unblur_running
                 # Now you have unlocked the vault to reference passwords between chosen person
 
-            senders_key = input("Name of sender's public key for later verification (without .asc)?\n ")
+            senders_key = input("Name of sender's public key for later verification (without .asc)?\n")
             full_file = f'{senders_key}.asc' # Sender's PGP key
             complete_path = "PGPKeys/" + str(full_file)
             session_info = [f'{name}', f'{senders_key}'] # save the name of the current recievers vault and pgp key
@@ -529,7 +529,7 @@ def message_unblur(master, session_info, message_unblur_running):
         password = ""
         sharedvault = ""
         
-        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back")
+        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back\n")
         if ask_back == None:
             continue # loop back
         elif ask_back.lower() == "exit":

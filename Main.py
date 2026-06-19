@@ -392,7 +392,7 @@ def message_blur(master, session_info, message_blur_running):
         sharedvault = ""
 
         ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back\n") or None
-        if ask_back == None:
+        if ask_back is None:
             continue
         elif ask_back.lower() == "exit":
             session_info.clear()
@@ -530,7 +530,7 @@ def message_unblur(master, session_info, message_unblur_running):
         sharedvault = ""
         
         ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back\n") or None
-        if ask_back == None:
+        if ask_back is None:
             continue # loop back
         elif ask_back.lower() == "exit":
             session_info.clear()

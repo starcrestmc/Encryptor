@@ -306,6 +306,13 @@ def message_blur(master, session_info, message_blur_running):
             change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session").strip() or None # Default to None if nothing is entered
             if change_ask.lower() == "edit":
                 name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
+                try:
+                    open(f'Vault/{name}.json', 'rb')
+                except:
+                    print("Error 404: Vault File Not Found")
+                    message_blur_running = 0
+                    session_info.clear()
+                    return message_blur_running
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                     ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it): ")
@@ -326,6 +333,13 @@ def message_blur(master, session_info, message_blur_running):
                     # Now you have unlocked the vault to reference passwords between chosen person
 
                 pub = input("\nFriends's public key name? (without .asc)\n")
+                try:
+                    open(f'PGPKeys/{pub}.asc', 'rb')
+                except:
+                    print("Error 404: PGP File Not Found")
+                    message_blur_running = 0
+                    session_info.clear()
+                    return message_blur_running
                 full_file = f'{pub}.asc' #Receivers key
                 friend_key_location = "PGPKeys/" + str(full_file)
                 
@@ -338,6 +352,15 @@ def message_blur(master, session_info, message_blur_running):
                 return
         except IndexError:
             name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
+            
+            try:
+                open(f'Vault/{name}.json', 'rb')
+            except:
+                print("Error 404: Vault File Not Found")
+                message_blur_running = 0
+                session_info.clear()
+                return message_blur_running
+                
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                 ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
@@ -359,9 +382,16 @@ def message_blur(master, session_info, message_blur_running):
                 # Now you have unlocked the vault to reference passwords between chosen person
 
             pub = input("\nFriends's public key name? (without .asc)\n")
+            try:
+                open(f'PGPKeys/{pub}.asc', 'rb')
+            except:
+                print("Error 404: PGP File Not Found")
+                message_blur_running = 0
+                session_info.clear()
+                return message_blur_running
             full_file = f'{pub}.asc' #Receivers key
             friend_key_location = "PGPKeys/" + str(full_file)
-
+            
         reference_number = secrets.randbelow(len(sharedvault)) # Get a secure random number | we append this number to the end
         plaintext = input("\nWhat is your message? \n")
         try:
@@ -380,6 +410,13 @@ def message_blur(master, session_info, message_blur_running):
         print(f'\nYour List is now {post_pop_length} entries long\n\n\n')
 
         private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
+        try:
+            open(f'PGPKeys/private.asc', 'rb')
+        except:
+            print("Error 404: Private Key Renamed or Deleted")
+            message_blur_running = 0
+            session_info.clear()
+            return message_blur_running
         msg = encrypted_msg
         run_pgp = PGPmsg.enc(private_key_location,friend_key_location,msg)
         message = hide_text(str(run_pgp))
@@ -416,6 +453,13 @@ def message_unblur(master, session_info, message_unblur_running):
             change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session").strip() or None # Default to None if nothing is entered
             if change_ask.lower() == "edit":
                 name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+                try:
+                    open(f'Vault/{name}.json', 'rb')
+                except:
+                    print("Error 404: Vault File Not Found")
+                    message_unblur_running = 0
+                    session_info.clear()
+                    return message_unblur_running
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                     ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
@@ -438,8 +482,17 @@ def message_unblur(master, session_info, message_unblur_running):
                     # Now you have unlocked the vault to reference passwords between chosen person
 
                 senders_key = input("Name of sender's public key for later verification (without .asc)?\n")
+                try:
+                    open(f'PGPKeys/{pub}.asc', 'rb')
+                except:
+                    print("Error 404: PGP File Not Found")
+                    message_unblur_running = 0
+                    session_info.clear()
+                    return message_unblur_running
+        
                 full_file = f'{senders_key}.asc' #senders key
                 complete_path = "PGPKeys/" + str(full_file)
+                
             elif change_ask is None:
                 pass
 
@@ -452,6 +505,14 @@ def message_unblur(master, session_info, message_unblur_running):
             
         except IndexError:
             name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
+            try:
+                open(f'Vault/{name}.json', 'rb')
+            except:
+                print("Error 404: Vault File Not Found")
+                message_unblur_running = 0
+                session_info.clear()
+                return message_unblur_running
+                
             with open(f'Vault/{name}.json', 'rb') as encrypted_named:
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                 ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
@@ -473,6 +534,14 @@ def message_unblur(master, session_info, message_unblur_running):
                 # Now you have unlocked the vault to reference passwords between chosen person
 
             senders_key = input("Name of sender's public key for later verification (without .asc)?\n")
+            try:
+                open(f'PGPKeys/{senders_key}.asc', 'rb')
+            except:
+                print("Error 404: PGP File Not Found")
+                message_unblur_running = 0
+                session_info.clear()
+                return message_unblur_running
+                
             full_file = f'{senders_key}.asc' # Sender's PGP key
             complete_path = "PGPKeys/" + str(full_file)
             session_info = [f'{name}', f'{senders_key}'] # save the name of the current recievers vault and pgp key
@@ -486,6 +555,14 @@ def message_unblur(master, session_info, message_unblur_running):
             message_unblur_running = 0
             session_info.clear()
             return message_unblur_running
+
+        try:
+            open(f'PGPKeys/private.asc', 'rb')
+        except:
+            print("Error 404: Private Key Renamed or Deleted")
+            message_blur_running = 0
+            session_info.clear()
+            return message_blur_running
         private_key_location = "PGPKeys/private.asc" # Personal private PGP key location
 
         try:
@@ -518,7 +595,7 @@ def message_unblur(master, session_info, message_unblur_running):
         if int(new_length) != int(post_pop_length):
             print("Error, Password sync Mismatch")
             hashed = sha256(password.encode('utf-8')).hexdigest()
-            print(f'Password Hash: {hashed} | Password Index {reference}')
+            print(f'Password Hash: {hashed} | Password Index: {reference}')
             print("\nPlease Compare with Sender\n")
 
         print(f'Message:\n\n{decrypted_msg}')
@@ -553,6 +630,14 @@ def master_vault_setup():
     
 def friends_vault_generator():
     friend_name = input("Please enter your friends name: ")
+    try:
+        open(f'Vault/BLANK.json', 'r')
+    except:
+        print("Error 404: Blank Vault not Found, Please Redownload")
+        message_blur_running = 0
+        message_unblur_running = 0
+        session_info.clear()
+        return message_blur_running, message_unblur_running
     shutil.copy('Vault/BLANK.json', f'Vault/{friend_name}.json')
     list_generate(f'{friend_name}')
     print("Share file with your friend and tell them to rename it to your name (keep a copy for later)")
@@ -632,6 +717,11 @@ while started == 1:
                 continue
         elif start_menu_choice == "3":
             try:
+                try:
+                    open(f'Vault/master.json', 'r')
+                except:
+                    print("Error 404: Master Vault not Found, Please (Re)generate with option 1. ")
+                    continue
                 encrypt_vault()
             except KeyboardInterrupt:
                 session_info.clear()
@@ -646,6 +736,18 @@ while started == 1:
             # Unlock the Master Vault to do any further operations
             #print(len(master)) # if 1028 on first run then master was successfully decoded and retrieved
             try:
+                try:
+                    open(f'Vault/master.json', 'r')
+                except:
+                    print("Error 404: Master Vault not Found, Please (Re)generate with option 1. ")
+                    continue
+                try:
+                    open(f'PGPKeys/private.asc', 'r')
+                    open(f'PGPKeys/public.asc', 'r')
+                except:
+                    print("Error 404: Private or Public PGP key missing, Please clear private/public(.asc) and restart the program \nExiting in 3 seconds...")
+                    t.sleep(3)
+                    exit()
                 message_blur_running = 1
                 message_blur(master, session_info, message_blur_running)
             except KeyboardInterrupt:
@@ -662,6 +764,18 @@ while started == 1:
             # Unlock the Master to do any further operations
             #print(len(master)) # if 1028 on first run then master was successfully decoded and retrieved
             try:
+                try:
+                    open(f'Vault/master.json', 'r')
+                except:
+                    print("Error 404: Master Vault not Found, Please (Re)generate with option 1. ")
+                    continue
+                try:
+                    open(f'PGPKeys/private.asc', 'r')
+                    open(f'PGPKeys/public.asc', 'r')
+                except:
+                    print("Error 404: Private or Public PGP key missing, Please clear private/public(.asc) and restart the program \nExiting in 3 seconds...")
+                    t.sleep(3)
+                    exit()
                 message_unblur_running = 1
                 message_unblur(master, session_info, message_unblur_running)
             except KeyboardInterrupt:

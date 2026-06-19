@@ -41,6 +41,18 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 switchcase = None # set the case to blank
 PGPmsg.POST() # Make sure PGP Keys are Generated (POST = Power On Self Test)
 
+try:
+    open('config.json', 'r')
+except:
+    print('Error: config.json doesn\'t Exist, Please redownload the project. Exiting...')
+    t.sleep(3)
+    exit()
+
+with open('config.json', 'r', encoding='utf-8') as f:
+    config_dictionary = json.load(f)
+
+global key_map # make key map global so i dont have to pass it in and out of functions
+key_map = list(config_dictionary.values())
 
 def list_generate(file_to_write):
     class pt:
@@ -130,28 +142,31 @@ def list_generate(file_to_write):
     joiner(file_to_write)
     with open(f'Vault/{file_to_write}.json', 'r') as f:
         data = json.load(f)
-# Binary - Unicode Code - Character Key:
-# 0000 | u+200b is ZWSP (Zero Width Space)
-# 0001 | u+200c is ZWNJ (Zero Width Non Joiner)
-# 0010 | u+200d is ZWJ (Zero Width Joiner)
-# 0011 | u+2060 is WJ (Word Joiner)
-# 0100 | u+200e is LTRM (Left To Right Mark) who is mark, whys he so important??
-# 0101 | u+200f is RTLM (Right To Left Mark) I still dont know who mark is :(
-# 0110 | u+2066 is LTRI (Left To Right Isolate)
-# 0111 | u+2067 is RTLI (Right To Left Isolate)
-# 1000 | u+2068 is FSI (First Strong Isolate)
-# 1001 | u+2069 is PDI (Pop Directional Isolate)
-# 1010 | u+180e is Mongolian Vowel Separator
-# 1011 | u+feff is ZWNBS (Zero Width Breaking Space)
-# 1100 | u+202a is LRE (Left [to] Right Embedding)
-# 1101 | u+202b is RLE (Right [to] Left Embedding)
-# 1110 | u+206a is Inhibit Symmetric Swapping
-# 1111 | u+206b is Active Symmetric Swapping
+
+# Unicode Code - Character Key:
+# u+200b is ZWSP (Zero Width Space)
+# u+200c is ZWNJ (Zero Width Non Joiner)
+# u+200d is ZWJ (Zero Width Joiner)
+# u+2060 is WJ (Word Joiner)
+# u+200e is LTRM (Left To Right Mark) who is mark, whys he so important??
+# u+200f is RTLM (Right To Left Mark) I still dont know who mark is :(
+# u+2066 is LTRI (Left To Right Isolate)
+# u+2067 is RTLI (Right To Left Isolate)
+# u+2068 is FSI (First Strong Isolate)
+# u+2069 is PDI (Pop Directional Isolate)
+# u+180e is Mongolian Vowel Separator
+# u+feff is ZWNBS (Zero Width Breaking Space)
+# u+202a is LRE (Left [to] Right Embedding)
+# u+202b is RLE (Right [to] Left Embedding)
+# u+206a is Inhibit Symmetric Swapping
+# u+206b is Active Symmetric Swapping
+
+# in config.json you can change these around, your options for each are:
+# \u206b,\u206a,\u202b,\u202a,\ufeff,\u180e,\u2069,\u2068,\u2067,\u2066,\u200f,\u200e,\u2060,\u200d,\u200c,\u200b
+# there can only be 1 per nibble (4 bits e.g. 1011)
 
 
 def hide_text(text):
-    key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\ufeff', '\u202a', '\u202b', '\u206a', '\u206b']
-    # Key map defined to map characters to 4 bit binary chunks (nibbles)
     binary_data = ''.join(format(ord(c), '08b') for c in text)
     hidden_chars = []
     for i in range(0, len(binary_data), 4):
@@ -171,8 +186,6 @@ def hide_text(text):
 
 
 def show_text(text):
-    # 1. Use the exact same key_map list
-    key_map = ['\u200b', '\u200c', '\u200d', '\u2060', '\u200e', '\u200f', '\u2066', '\u2067', '\u2068', '\u2069', '\u180e', '\ufeff', '\u202a', '\u202b', '\u206a', '\u206b']
     binary_chunks = []
     for char in text: # Read the hidden text character by character
         if char in key_map:

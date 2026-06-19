@@ -303,7 +303,7 @@ def message_blur(master, session_info, message_blur_running):
             vault_name = session_info[0]
             pgp_name = session_info[1]
             print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
-            change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session") or None # Default to None if nothing is entered
+            change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session").strip() or None # Default to None if nothing is entered
             if change_ask.lower() == "edit":
                 name = input("\nPlease Enter the name of the Person who\'s password list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
@@ -391,7 +391,7 @@ def message_blur(master, session_info, message_blur_running):
         password = ""
         sharedvault = ""
 
-        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back\n") or None
+        ask_back = input("Press enter to continue encrypting messages or type \'exit\' to go Back\n").strip() or None
         if ask_back is None:
             continue
         elif ask_back.lower() == "exit":
@@ -413,7 +413,7 @@ def message_unblur(master, session_info, message_unblur_running):
             vault_name = session_info[0]
             pgp_name = session_info[1]
             print(f'Your current session is using {vault_name}\'s Vault and {pgp_name}.pgp')
-            change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session") or None # Default to None if nothing is entered
+            change_ask = input("Input \'edit\' to Change session or Press Enter to Continue with current session").strip() or None # Default to None if nothing is entered
             if change_ask.lower() == "edit":
                 name = input("\nPlease Enter the name of the Person who\'s list to use for this session:\n")
                 with open(f'Vault/{name}.json', 'rb') as encrypted_named:
@@ -529,7 +529,7 @@ def message_unblur(master, session_info, message_unblur_running):
         password = ""
         sharedvault = ""
         
-        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back\n") or None
+        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back\n").strip() or None
         if ask_back is None:
             continue # loop back
         elif ask_back.lower() == "exit":

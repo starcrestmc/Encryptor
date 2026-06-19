@@ -529,7 +529,7 @@ def message_unblur(master, session_info, message_unblur_running):
         password = ""
         sharedvault = ""
         
-        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back\n")
+        ask_back = input("Press enter to continue decrypting messages or type \'exit\' to go Back\n") or None
         if ask_back == None:
             continue # loop back
         elif ask_back.lower() == "exit":

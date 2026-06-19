@@ -310,7 +310,7 @@ def message_blur(master, session_info, message_blur_running):
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                     ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it): ")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
-                    if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                    if named_vault is None: # Exit if the function returns empty (Incorrect Password)
                         session_info.clear()
                         message_blur_running = 0
                         return message_blur_running
@@ -329,7 +329,7 @@ def message_blur(master, session_info, message_blur_running):
                 full_file = f'{pub}.asc' #Receivers key
                 friend_key_location = "PGPKeys/" + str(full_file)
                 
-            elif change_ask == None:
+            elif change_ask is None:
                 pass
 
             else:
@@ -342,7 +342,7 @@ def message_blur(master, session_info, message_blur_running):
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                 ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                 named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
-                if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                if named_vault is None: # Exit if the function returns empty (Incorrect Password)
                     message_blur_running = 0
                     session_info.clear()
                     return message_blur_running
@@ -420,7 +420,7 @@ def message_unblur(master, session_info, message_unblur_running):
                     ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                     ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                     named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
-                    if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                    if named_vault is None: # Exit if the function returns empty (Incorrect Password)
                         message_unblur_running = 0
                         session_info.clear()
                         return message_unblur_running
@@ -440,7 +440,7 @@ def message_unblur(master, session_info, message_unblur_running):
                 senders_key = input("Name of sender's public key for later verification (without .asc)?\n")
                 full_file = f'{senders_key}.asc' #senders key
                 complete_path = "PGPKeys/" + str(full_file)
-            elif change_ask == None:
+            elif change_ask is None:
                 pass
 
             else:
@@ -456,7 +456,7 @@ def message_unblur(master, session_info, message_unblur_running):
                 ciphertext = encrypted_named.read() # set ciphertext to the encrypted list
                 ref = getpass.getpass("\nPlease Enter Your Reference Number for {name} (This won\'t show when you type it):\n")
                 named_vault = vault_manager(1, ciphertext, ref, master) # vault manager handles encryption, case 1 is encryption
-                if named_vault == None: # Exit if the function returns empty (Incorrect Password)
+                if named_vault is None: # Exit if the function returns empty (Incorrect Password)
                     message_unblur_running = 0
                     session_info.clear()
                     return message_unblur_running
@@ -577,7 +577,7 @@ def encrypt_vault():
         master_vault_status = input("Is the master vault currently Encrypted? [Y]es/[N]o: ")
         if master_vault_status == "y":
             master = vault_manager(0) # Unlock the Master to do any further operations
-            if master == None:
+            if master is None:
                 print("Master vault not encrypted, please Encrypt first with option 3 then \'m\'")
                 return
             else:

@@ -15,7 +15,7 @@ This work is licensed under a
 
 [![DOI][doi-badge]][doi-link] [![CC BY-NC-ND 4.0][cc-by-nc-nd-shield]][cc-by-nc-nd] [![CC BY-NC-ND 4.0][cc-by-nc-nd-image]][cc-by-nc-nd]
 
-[doi-badge]: https://zenodo.org/badge/1263553676.svg
+[doi-badge]: https://zenodo.org/badge/DOI/10.5281/zenodo.22062757.svg
 [doi-link]: https://doi.org/10.5281/zenodo.20618724
 [cc-by-nc-nd]: http://creativecommons.org/licenses/by-nc-nd/4.0/
 [cc-by-nc-nd-image]: https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png
